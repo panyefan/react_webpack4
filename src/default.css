@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+/* CSS Document */
+html,body{ height:100%;}
+body{
+	margin:0;
+	padding:0;
+	font-size:14px;
+	font-family:Microsoft YaHei;
+	color:#333;
+	background:#F3F4F8 !important;
+}
+dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,input,textarea,p,th,td{ margin:0; padding:0; list-style:none;}
+a img{ border:none;}
+a{ color:#333; text-decoration:none;}
+a:hover{ text-decoration:none;}
+input,textarea,button{ font-family: Microsoft YaHei; border: none; outline: none; padding: 0; margin: 0; background: transparent;}
+.center{ width:1200px; margin:0 auto; text-align:left;}
+.clear{ clear:both;}
+.fl{ float:left;}
+.fr{ float:right;}
+.none{ display:none !important;}
+.hide{ display:none;}
+.hidden{ visibility:hidden;}
+input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{color:#ccc;} /* WebKit browsers */
+input:-moz-placeholder,textarea:-moz-placeholder{color:#ccc;} /* Mozilla Firefox 4 to 18 */
+input::-moz-placeholder,textarea::-moz-placeholder{color:#ccc;} /* Mozilla Firefox 19+ */
+input:-ms-input-placeholder,textarea:-ms-input-placeholder{color:#ccc;} /* Internet Explorer 10+ */
+
+/* Col里面元素的左中右布局 */
+.tl{text-align: left;}
+.tc{text-align: center;}
+.tr{text-align: right;}
