@@ -1,16 +1,16 @@
 var path = require('path');
 var webpack = require('webpack');
 var htmlWebpackPlugin = require('html-webpack-plugin'); // html模板插件
+var CopyWebpackPlugin = require("copy-webpack-plugin");
+var HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 var MiniCssExtractPlugin = require("mini-css-extract-plugin"); // 打包css插件
-var proxy = require('http-proxy-middleware');
 
 var config = {
     entry: {
-        app:path.resolve(__dirname, './src/App.js'),
+        app: path.resolve(__dirname, './src/App.js'),
     },
     output: {
         path: path.resolve(__dirname, './html'),
-        publicPath: '/html/',
         filename: '[name].min.js',
         chunkFilename: '[id].[name].[chunkhash:8].min.js' //chunk生成的配置
     },
@@ -20,9 +20,16 @@ var config = {
                 NODE_ENV: JSON.stringify('dev')
             }
         }),
+        new webpack.DllReferencePlugin({
+            context: __dirname,
+            /**
+             * 在这里引入 manifest 文件
+             */
+            manifest: require('./dll/vendor-manifest.json')
+        }),
         new webpack.HotModuleReplacementPlugin(), // 热模块替换插件
         new htmlWebpackPlugin({
-            title: 'react项目',
+            title: '企业福利管理系统',
             filename: './index.html',
             favicon: 'favicon.ico',
             template: './src/app.html',
@@ -35,7 +42,17 @@ var config = {
         new MiniCssExtractPlugin({
             filename: "[name].[chunkhash:8].css",
             chunkFilename: "[id].[name].[chunkhash:8].css"
-        })
+        }),
+        new CopyWebpackPlugin([
+            {
+                from: "./dll/vendor.dll.js",
+                to: "dll.js"
+            }
+        ]),
+        new HtmlWebpackIncludeAssetsPlugin({
+            assets: ['dll.js'],
+            append: false,
+        }),
     ],
     optimization: {
         splitChunks: {
@@ -62,18 +79,59 @@ var config = {
         runtimeChunk: { name: 'runtime' }
     },
     module: {
-        rules: [{
+        rules: [
+            {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/
             },
             {
-                test:/\.css|styl$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader','stylus-loader']
+                test: /\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader', options: {
+                            sourceMap: true
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            sourceMap: true,
+                            config: {
+                                path: 'postcss.config.js'
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.styl$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader', options: {
+                            sourceMap: true
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            sourceMap: true,
+                            config: {
+                                path: 'postcss.config.js'
+                            }
+                        }
+                    },
+                    {
+                        loader: 'stylus-loader', options: { sourceMap: true }
+                    },
+                ],
+                exclude: /node_modules/
             },
             {
                 test: /\.(png|jpg|woff|eot|ttf|svg)$/,
-                loader: 'url-loader?limit=1&name=images/[name].[ext]'
+                loader: 'url-loader?limit=2048&name=images/[name].[ext]'
             },
             {
                 test: /\.html$/,
@@ -85,40 +143,15 @@ var config = {
     },
     devServer: {
         disableHostCheck: true,
-        port: 29303,
-        hot:true,
+        port: 8088,
+        hot: true,
         proxy: {
             // 开发环境 begin
             '/api_dev_adm/': {
-                target: 'https://adm.hstydev.com',
+                target: 'http://kj.lex55.top',
                 secure: false,
                 changeOrigin: true,
                 pathRewrite: { '^/api_dev_adm': '' }
-            },
-            '/api_dev_service/': {
-                target: 'https://service.hstydev.com',
-                secure: false,
-                changeOrigin: true,
-                pathRewrite: { '^/api_dev_service': '' }
-            },
-            '/api_dev_mch/': {
-                target: 'https://mch.hstydev.com',
-                secure: false,
-                changeOrigin: true,
-                pathRewrite: { '^/api_dev_mch': '' }
-            },
-            // 开发环境 end
-            '/pic/': {
-                target: ' https://adm.hstydev.com',
-                secure: false,
-                changeOrigin: true,
-                pathRewrite: { '^/pic': '/pic' }
-            },
-            '/static/': {
-                target: 'https://adm.hstydev.com',
-                secure: false,
-                changeOrigin: true,
-                pathRewrite: { '^/static': '/static' }
             }
         }
     }

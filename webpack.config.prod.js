@@ -1,30 +1,29 @@
-var path=require('path');
-var webpack=require('webpack');
-var htmlWebpackPlugin=require('html-webpack-plugin');
+var path = require('path');
+var webpack = require('webpack');
+var htmlWebpackPlugin = require('html-webpack-plugin');
 var MiniCssExtractPlugin = require("mini-css-extract-plugin"); // 打包css插件
 var FastUglifyJsPlugin = require('fast-uglifyjs-plugin');
 
-var config={
-    entry:{
-        app:path.resolve(__dirname,'./src/App.js'),
+var config = {
+    entry: {
+        app: path.resolve(__dirname, './src/App.js'),
     },
-    output:{
+    output: {
         path: path.resolve(__dirname, './html'),
-        publicPath:'/html/',
         filename: '[name].min.js',
         chunkFilename: '[id].[chunkhash:8].min.js'   //chunk生成的配置
     },
     performance: {
         hints: false
     },
-    plugins:[
+    plugins: [
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV:JSON.stringify('production')
+                NODE_ENV: JSON.stringify('production')
             }
         }),
         new htmlWebpackPlugin({
-            title: 'react项目',
+            title: '企业福利管理系统',
             filename: './index.html',
             favicon: 'favicon.ico',
             template: './src/app.html',
@@ -75,29 +74,63 @@ var config={
         },
         runtimeChunk: { name: 'runtime' }
     },
-    module:{
-        rules:[
+    module: {
+        rules: [
             {
-                test:/\.js$/,
-                loader:'babel-loader',
-                exclude:/node_modules/
+                test: /\.js$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/
             },
             {
-                test:/\.css|styl$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader','stylus-loader']
+                test: /\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader'
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: 'postcss.config.js'
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.styl$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader'
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                path: 'postcss.config.js'
+                            }
+                        }
+                    },
+                    {
+                        loader: 'stylus-loader'
+                    },
+                ],
+                exclude: /node_modules/
             },
             {
                 test: /\.(png|jpg|woff|eot|ttf|svg)$/,
-                loader:'url-loader?limit=3072&name=images/[name].[ext]'
+                loader: 'url-loader?limit=2048&name=images/[name].[ext]'
             },
             {
-                test:/\.html$/,
-                loader:'html-loader',
-                exclude:/node_modules/
+                test: /\.html$/,
+                loader: 'html-loader',
+                exclude: /node_modules/
             }
 
         ]
     }
 }
 
-module.exports=config;
+module.exports = config;

@@ -1,43 +1,22 @@
-# 一、React webpack4 配置优化
-## 1、之前做的项目，webpack配置文件没有优化好，编译后的包文件太大了，每个js文件都包含公共部分的代码，源文件7M多的，编译后的包文件达到60M左右；
-## 2、经过webpack配置的优化，源文件7M多的，编译后的包文件为8M左右；
-## 3、这个项目只是一个demo，不过目录结构和webpack配置文件，和已经做好的上线项目基本一致；
-## 4、这个demo项目原文件大小（不包括node_modules文件）为530 KB (542,908 字节)，编译后的包文件为777 KB (796,037 字节)
-# 二、webpack关键配置
-```
-optimization: {
-	splitChunks: {
-		cacheGroups: {
-			vendors: {
-				test: /[\\/]node_modules[\\/]/,
-				chunks: 'initial',
-				name: 'vendors'
-			},
-			'async-vendors': {
-				test: /[\\/]node_modules[\\/]/,
-				minChunks: 2,
-				chunks: 'async',
-				name: 'async-vendors'
-			},
-			'async-components': {
-				test: /[\\/]src[\\/]components[\\/],
-				minChunks: 2,
-				chunks: 'async',
-				name: 'async-components'
-			}
-		}
-	},
-	runtimeChunk: { name: 'runtime' }
-},
-```
-# 三、运行本项目
+# 本React项目框架特色
+### 1、使用mobx状态管理
+### 2、使用antd的UI库
+### 3、使用stylus的CSS预处理框架 https://www.zhangxinxu.com/jq/stylus/
+### 4、使用react-router路由
+### 5、使用postcss、autoprefixer插件对CSS样式自动添加前缀
+### 6、开发环境使用webpack.DllPlugin，提前打包一些基本不怎么修改的文件，提高打包效率
+
+# 运行本项目
 ```
 // 下载本项目到本地，运行以下命令进行模块安装
-npm install
+npm install --save-dev
 
-// 安装好之后，运行项目，启动成功之后，访问http://localhost:29303/html/#/
+// 开发环境：提前打包一些基本不怎么修改的文件
+npm run dll
+
+// 运行项目，启动成功之后，访问http://localhost:8088/#/Login
 npm run dev
 
-// 编译生产环境使用的包文件
+// 生产环境：编译使用的包文件
 npm run build
 ```
