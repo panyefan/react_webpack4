@@ -18,7 +18,7 @@
   "author": "hsty",
   "license": "ISC",
   "devDependencies": {
-    "antd": "^3.10.4",
+    "antd": "^3.10.5",
     "autoprefixer": "^9.3.1",
     "axios": "^0.18.0",
     "babel-core": "^6.26.3",
