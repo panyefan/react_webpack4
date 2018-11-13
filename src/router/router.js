@@ -29,6 +29,14 @@ const router = {
                 }, 'Dices');
             }
         },
+        {
+            path: 'Test',        //Test页面
+            getComponent(nextState, callback) {
+                require.ensure([], require => {
+                    callback(null, require('../pages/Test/Test'));
+                }, 'Test');
+            }
+        },
 
     ]
 }

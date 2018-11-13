@@ -1,47 +1,148 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon, Tabs } from 'antd';
-
+import PropTypes from 'prop-types';
 import './init.styl';
 
 class Init extends Component {
-    constructor(props) {
-        super(props);
-        this.newTabIndex = 0;
+    constructor(props, context) {
+        super(props, context);
+        this.curTabKey = ''; // 当前激活的是哪个tab
         this.state = {
-            collapsed: false,
-            panes: [
-                { title: 'Tab 1', content: 'Content of Tab Pane 1', key: '1' },
-                { title: 'Tab 1', content: 'Content of Tab Pane 1', key: '2' },
-            ]
+            collapsed: false, // 是否折叠菜单
+            activeKey: '',
+            panes: [],
+            acurrentTabKey: '',  // 当前激活的是哪个tab
+            atabPanes: [], // 当前总共有哪些tab
         }
     }
 
-    componentDidMount() {
-
+    static contextTypes = {
+        router: PropTypes.object
     }
 
-    componentWillUnmount() {
+    componentDidMount() {
+        this.updateTab(this.props);
+    }
 
+    componentWillMount() {
+        // this.tabTitleMap = this.parseTabTitle(this.state.menus);
+        this.tabTitleMap = this.parseTabTitle([{'funcId':1,'funcName':'Dices','funcUrl':'Dices'}]);
+        this.updateTab(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+
+        let {panes} = this.state;
+
+        const action = this.props.location.action;
+        if (action === 'PUSH') {  // action有PUSH、POP、REPLACE等几种, 不太清楚分别是做什么用的
+            return;
+        }
+        // FIXME: hack, 因为要区分react-router引起的re-render和redux引起的re-render
+        if (this.props.collapse === nextProps.collapse) {
+            this.updateTab(nextProps);
+        }
     }
 
     // Tabs
     onChange = (activeKey) => {
-        this.setState({ activeKey });
+        let curHref = activeKey;
+        let preLink = window.location.href.split('#/')[1].split('?');
+        let preHref = preLink[0];
+        let preQuery = preLink[1] || '';
+        sessionStorage.setItem(preHref, preQuery);
+        let curQuery = sessionStorage.getItem(curHref) || '';
+        this.context.router.push(activeKey + '?' + curQuery);
     }
 
     onEdit = (targetKey, action) => {
         this[action](targetKey);
     }
 
-    // add = () => {
-    //     const panes = this.state.panes;
-    //     const activeKey = `newTab${this.newTabIndex++}`;
-    //     panes.push({ title: 'New Tab', content: 'New Tab Pane', key: activeKey });
-    //     this.setState({ panes, activeKey });
-    // }
+    //tab keys数组表
+    findValues = () => {
+        let values = [];
+        const panes = this.state.panes;
+        for(let i=0;i<panes.length;i++) {
+            if(panes[i].key) {
+                values.push(panes[i].key);
+            }
+        }
+        return values;
+    }
+
+    //解析menu，生成叶子节点对应的key和名称
+    parseTabTitle = (menus) => {
+        const tabTitleMap = new Map();
+        const tabFuncIdMap = new Map();
+        // menus.forEach((menu) => {
+        //     menu.subs.forEach((item) => {
+        //         tabTitleMap.set(item.funcUrl.substr(1),item.funcName);
+        //         tabFuncIdMap.set(item.funcUrl.substr(1),item.funcId);
+        //     })
+        // });
+        menus.forEach((item) => {
+            tabTitleMap.set(item.funcUrl,item.funcName);
+            tabFuncIdMap.set(item.funcUrl,item.funcId);
+        });
+
+        this.tabFuncIdMap = tabFuncIdMap;
+
+        // routeMenus.forEach((item) => {
+        //     tabTitleMap.set(item.funcUrl, item.funcName)
+        // });
+
+        return tabTitleMap;
+    }
+
+    updateTab = (props) => {
+        let panes = this.state.panes;
+        const values = this.findValues();
+        let path = props.location.pathname;
+        if(path.startsWith('/') && path.length > 1) {
+            path = path.substr(1);
+        }
+        if(path == "index") {
+            path = '/';
+        }
+        const index = values.indexOf(path);
+        const tabTitle =  this.tabTitleMap.get(path);
+        const newtabs = {
+            title: tabTitle,
+            content: props.children,
+            key: path
+        };
+
+        if(index !== -1) {
+            const activeTabkey = `${panes[index].key}`;
+            const selectedKeys = (panes.length>0 && panes[0].key!='/' && panes[index].funcId) ? ('smenu' + panes[index].funcId) : ('smenu' + this.tabFuncIdMap.get(path));
+            this.setState({
+                activeKey: activeTabkey,
+                selectedKeys: [selectedKeys]
+            })
+
+            sessionStorage.setItem('NavDefaultSelectedKeys', selectedKeys || '');
+
+            this.curTabKey = activeTabkey;
+        } else {
+            if(path.includes('login')) {
+                return
+            };
+            panes.push({ title: tabTitle, content: props.children, key: path, funcId: this.tabFuncIdMap.get(path) });
+        }
+        let cancelTabsKey = sessionStorage.getItem('cancelTabs') || '';
+        sessionStorage.setItem('cancelTabs','')
+        panes = panes.filter(pane => pane.key !== cancelTabsKey);
+        this.setState({
+            panes,
+            activeKey: path
+        });
+    }
+
     remove = (targetKey) => {
         let activeKey = this.state.activeKey;
         let lastIndex;
+        const path = '/';
         this.state.panes.forEach((pane, i) => {
             if (pane.key === targetKey) {
                 lastIndex = i - 1;
@@ -50,6 +151,13 @@ class Init extends Component {
         const panes = this.state.panes.filter(pane => pane.key !== targetKey);
         if (lastIndex >= 0 && activeKey === targetKey) {
             activeKey = panes[lastIndex].key;
+            this.context.router.push(activeKey + '?' + (sessionStorage.getItem(activeKey) || ''));
+        } else if (lastIndex < 0 && panes.length > 0 && activeKey === targetKey) {
+            activeKey = panes[lastIndex + 1].key;
+            this.context.router.push(activeKey + '?' + (sessionStorage.getItem(activeKey) || ''));
+        } else if ( panes.length === 0) {
+            console.log(this.context);
+            this.context.router.push(path);
         }
         this.setState({ panes, activeKey });
     }
@@ -76,7 +184,7 @@ class Init extends Component {
             // </div>
             <Layout>
                 <Sider
-                    style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}
+                    className="sider-menu"
                     trigger={null}
                     collapsible
                     collapsed={this.state.collapsed}
@@ -98,26 +206,24 @@ class Init extends Component {
                     </Menu>
                 </Sider>
                 <Layout className={this.state.collapsed ? 'layout-retract' : 'layout-elongation'}>
-                    <Header style={{ position: 'fixed', top: 0,width: '100%', height: '64px', background: '#6c6c6c', padding: 0 }}>
+                    <Header className="header_wrap">
                         <Icon
                             className="trigger"
                             type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                             onClick={this.toggle}
                         />
                     </Header>
-                    <Tabs
-                        style={{ position: 'fixed', top: '64px',width: '100%' }}
-                        hideAdd
-                        onChange={this.onChange}
-                        activeKey={this.state.activeKey}
-                        type="editable-card"
-                        onEdit={this.onEdit}
-                    >
-                        {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key}>{pane.content}</TabPane>)}
-                    </Tabs>
-                    {/* <Content style={{ margin: '86px 16px 24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
-                        Content
-                    </Content> */}
+                    <div className={`page_content ${this.state.collapsed ? 'page_content_fold' : 'page_content_unfold'}`}>
+                        <Tabs
+                            hideAdd
+                            onChange={this.onChange}
+                            activeKey={this.state.activeKey}
+                            type="editable-card"
+                            onEdit={this.onEdit}
+                        >
+                            {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key}>{pane.content}</TabPane>)}
+                        </Tabs>
+                    </div>
                 </Layout>
             </Layout>
 
