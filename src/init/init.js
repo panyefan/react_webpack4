@@ -3,7 +3,7 @@ import { Layout, Menu, Icon, Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import './init.styl';
 
-class Init extends Component {
+export default class Init extends Component {
     constructor(props, context) {
         super(props, context);
         this.curTabKey = ''; // 当前激活的是哪个tab
@@ -13,6 +13,14 @@ class Init extends Component {
             panes: [],
             acurrentTabKey: '',  // 当前激活的是哪个tab
             atabPanes: [], // 当前总共有哪些tab
+        }
+
+        if (SC.loginFlag) {
+            location.href = SC.indexUrl;
+            return;
+        } else if (!SC.loginFlag) {
+            location.href = SC.loginUrl;
+            return;
         }
     }
 
@@ -26,19 +34,16 @@ class Init extends Component {
 
     componentWillMount() {
         // this.tabTitleMap = this.parseTabTitle(this.state.menus);
-        this.tabTitleMap = this.parseTabTitle([{'funcId':1,'funcName':'Dices','funcUrl':'Dices'}]);
+        this.tabTitleMap = this.parseTabTitle([{ 'funcId': 1, 'funcName': 'Dices', 'funcUrl': 'Dices' }]);
         this.updateTab(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
-
-        let {panes} = this.state;
-
         const action = this.props.location.action;
-        if (action === 'PUSH') {  // action有PUSH、POP、REPLACE等几种, 不太清楚分别是做什么用的
+        console.log(`action:${action}`);
+        if (action === 'PUSH') {  // action有PUSH、POP、REPLACE等几种, 删除Tab页面
             return;
         }
-        // FIXME: hack, 因为要区分react-router引起的re-render和redux引起的re-render
         if (this.props.collapse === nextProps.collapse) {
             this.updateTab(nextProps);
         }
@@ -63,8 +68,8 @@ class Init extends Component {
     findValues = () => {
         let values = [];
         const panes = this.state.panes;
-        for(let i=0;i<panes.length;i++) {
-            if(panes[i].key) {
+        for (let i = 0; i < panes.length; i++) {
+            if (panes[i].key) {
                 values.push(panes[i].key);
             }
         }
@@ -82,8 +87,8 @@ class Init extends Component {
         //     })
         // });
         menus.forEach((item) => {
-            tabTitleMap.set(item.funcUrl,item.funcName);
-            tabFuncIdMap.set(item.funcUrl,item.funcId);
+            tabTitleMap.set(item.funcUrl, item.funcName);
+            tabFuncIdMap.set(item.funcUrl, item.funcId);
         });
 
         this.tabFuncIdMap = tabFuncIdMap;
@@ -99,23 +104,23 @@ class Init extends Component {
         let panes = this.state.panes;
         const values = this.findValues();
         let path = props.location.pathname;
-        if(path.startsWith('/') && path.length > 1) {
+        if (path.startsWith('/') && path.length > 1) {
             path = path.substr(1);
         }
-        if(path == "index") {
-            path = '/';
-        }
+        // if(path == "index") {
+        //     path = '/';
+        // }
         const index = values.indexOf(path);
-        const tabTitle =  this.tabTitleMap.get(path);
+        const tabTitle = this.tabTitleMap.get(path);
         const newtabs = {
             title: tabTitle,
             content: props.children,
             key: path
         };
 
-        if(index !== -1) {
+        if (index !== -1) {
             const activeTabkey = `${panes[index].key}`;
-            const selectedKeys = (panes.length>0 && panes[0].key!='/' && panes[index].funcId) ? ('smenu' + panes[index].funcId) : ('smenu' + this.tabFuncIdMap.get(path));
+            const selectedKeys = (panes.length > 0 && panes[0].key != '/' && panes[index].funcId) ? ('smenu' + panes[index].funcId) : ('smenu' + this.tabFuncIdMap.get(path));
             this.setState({
                 activeKey: activeTabkey,
                 selectedKeys: [selectedKeys]
@@ -125,14 +130,14 @@ class Init extends Component {
 
             this.curTabKey = activeTabkey;
         } else {
-            if(path.includes('login')) {
+            if (path.includes('login')) {
                 return
             };
             panes.push({ title: tabTitle, content: props.children, key: path, funcId: this.tabFuncIdMap.get(path) });
         }
-        let cancelTabsKey = sessionStorage.getItem('cancelTabs') || '';
-        sessionStorage.setItem('cancelTabs','')
-        panes = panes.filter(pane => pane.key !== cancelTabsKey);
+        // let cancelTabsKey = sessionStorage.getItem('cancelTabs') || '';
+        // sessionStorage.setItem('cancelTabs','')
+        // panes = panes.filter(pane => pane.key !== cancelTabsKey);
         this.setState({
             panes,
             activeKey: path
@@ -155,10 +160,11 @@ class Init extends Component {
         } else if (lastIndex < 0 && panes.length > 0 && activeKey === targetKey) {
             activeKey = panes[lastIndex + 1].key;
             this.context.router.push(activeKey + '?' + (sessionStorage.getItem(activeKey) || ''));
-        } else if ( panes.length === 0) {
+        } else if (panes.length === 0) {
             console.log(this.context);
             this.context.router.push(path);
         }
+        console.log(panes, activeKey);
         this.setState({ panes, activeKey });
     }
 
@@ -169,19 +175,26 @@ class Init extends Component {
         });
     }
 
+    menuClick = (obj) => {
+        console.log(obj);
+        obj.item.props.url && (location.href = obj.item.props.url);
+    }
+
+
     render() {
+        if (SC.loginFlag) {
+            // 渲染首页
+            return this.renderIndex();
+        } else {
+            // 登录首页
+            return this.renderLogin();
+        }
+    }
+
+    renderIndex = () => {
         const { Header, Sider, Content } = Layout;
         const TabPane = Tabs.TabPane;
         return (
-            // <div>
-            //     <div style={{ display: (this.props.location.pathname).charAt(this.props.location.pathname.length - 1) == '/' ? 'none' : 'block' }}>
-            //         <div key={this.props.location.pathname}>
-            //             {/*各子页面内容 start*/}
-            //             {this.props.children}
-            //             {/*各子页面内容 end*/}
-            //         </div>
-            //     </div>
-            // </div>
             <Layout>
                 <Sider
                     className="sider-menu"
@@ -189,21 +202,35 @@ class Init extends Component {
                     collapsible
                     collapsed={this.state.collapsed}
                 >
-                    <div className="logo" />
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                        <Menu.Item key="1">
-                            <Icon type="user" />
-                            <span>nav 1</span>
-                        </Menu.Item>
-                        <Menu.Item key="2">
-                            <Icon type="video-camera" />
-                            <span>nav 2</span>
-                        </Menu.Item>
-                        <Menu.Item key="3">
-                            <Icon type="upload" />
-                            <span>nav 3</span>
-                        </Menu.Item>
-                    </Menu>
+                    <div className="sider-menu-logo" />
+                    <div className="sider-menu-wrap">
+                        <Menu theme="light" mode="inline" onClick={this.menuClick} defaultSelectedKeys={['1']}>
+                            <Menu.Item key="1" url="#/Test">
+                                <Icon type="user" />
+                                <span>test</span>
+                            </Menu.Item>
+                            <Menu.Item key="2" url="#/index">
+                                <Icon type="video-camera" />
+                                <span>login</span>
+                            </Menu.Item>
+                            <Menu.Item key="3">
+                                <Icon type="upload" />
+                                <span>nav 3</span>
+                            </Menu.Item>
+                            <Menu.Item key="4">
+                                <Icon type="upload" />
+                                <span>nav 4</span>
+                            </Menu.Item>
+                            <Menu.Item key="5">
+                                <Icon type="upload" />
+                                <span>nav 5</span>
+                            </Menu.Item>
+                            <Menu.Item key="6">
+                                <Icon type="upload" />
+                                <span>nav 6</span>
+                            </Menu.Item>
+                        </Menu>
+                    </div>
                 </Sider>
                 <Layout className={this.state.collapsed ? 'layout-retract' : 'layout-elongation'}>
                     <Header className="header_wrap">
@@ -214,20 +241,27 @@ class Init extends Component {
                         />
                     </Header>
                     <div className={`page_content ${this.state.collapsed ? 'page_content_fold' : 'page_content_unfold'}`}>
-                        <Tabs
-                            hideAdd
-                            onChange={this.onChange}
-                            activeKey={this.state.activeKey}
-                            type="editable-card"
-                            onEdit={this.onEdit}
-                        >
-                            {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key}>{pane.content}</TabPane>)}
-                        </Tabs>
+                        <div className="min_width">
+                            <Tabs
+                                hideAdd
+                                onChange={this.onChange}
+                                activeKey={this.state.activeKey}
+                                type="editable-card"
+                                onEdit={this.onEdit}
+                            >
+                                {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key}>{pane.content}</TabPane>)}
+                            </Tabs>
+                        </div>
                     </div>
                 </Layout>
             </Layout>
-
         )
     }
+
+    renderLogin=()=>{
+        return (
+            <div>登录页面</div>
+        )
+    }
+
 }
-export default Init;

@@ -5,6 +5,9 @@ import Utils from '../utils/Utils';
 // 初始化一个全局变量对象
 global.SC = {
     baseUrl: '',
+    loginFlag: true,
+    loginUrl: '#/login',
+    indexUrl: '#/index',
 }
 
 if (process.env.NODE_ENV != 'production') { // 开发环境
@@ -14,6 +17,11 @@ if (process.env.NODE_ENV != 'production') { // 开发环境
 
 global.initHoldPages = () => {
     console.log("全局方法");
+}
+
+// 退出登录，登录超时的时候需要将其数据清空
+global.clearData = () => {
+    SC.loginFlag = false;
 }
 
 // 拦截所有请求的axios全局拦截器

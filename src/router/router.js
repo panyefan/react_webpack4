@@ -8,25 +8,17 @@ const router = {
     indexRoute: {
         getComponent(nextState, callback) {
             require.ensure([], require => {
-                callback(null, require('../pages/Login/Login'));
-            }, 'login');
+                callback(null, require('../pages/index/index'));
+            }, 'index');
         }
     },
     childRoutes: [
         {
-            path: 'login',        //登陆页面
+            path: 'index',        //首页
             getComponent(nextState, callback) {
                 require.ensure([], require => {
-                    callback(null, require('../pages/Login/Login'));
-                }, 'login');
-            }
-        },
-        {
-            path: 'Dices',        //筛子页面
-            getComponent(nextState, callback) {
-                require.ensure([], require => {
-                    callback(null, require('../pages/Dices/Dices'));
-                }, 'Dices');
+                    callback(null, require('../pages/index/index'));
+                }, 'index');
             }
         },
         {
@@ -37,7 +29,6 @@ const router = {
                 }, 'Test');
             }
         },
-
     ]
 }
 

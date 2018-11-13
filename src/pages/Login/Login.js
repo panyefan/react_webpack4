@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Form, Input, Button } from 'antd';
 
-import './Login.styl';
+import './login.styl';
 import { locale } from 'moment';
 
 export default class Login extends React.Component {
