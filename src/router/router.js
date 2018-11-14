@@ -14,6 +14,14 @@ const router = {
     },
     childRoutes: [
         {
+            path: 'login',        //登录页面
+            getComponent(nextState, callback) {
+                require.ensure([], require => {
+                    callback(null, require('../pages/login/login'));
+                }, 'login');
+            }
+        },
+        {
             path: 'index',        //首页
             getComponent(nextState, callback) {
                 require.ensure([], require => {

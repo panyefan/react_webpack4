@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon, Tabs } from 'antd';
+import { Login, Register } from '../components/LoginRegister/index';
 import PropTypes from 'prop-types';
 import './init.styl';
 
@@ -182,6 +183,7 @@ export default class Init extends Component {
 
 
     render() {
+        console.log("32412348723489");
         if (SC.loginFlag) {
             // 渲染首页
             return this.renderIndex();
@@ -260,7 +262,13 @@ export default class Init extends Component {
 
     renderLogin=()=>{
         return (
-            <div>登录页面</div>
+            <div className="login_wrap">
+                <div className="login_wrap_left">
+                    <Login/>
+                    {/* <Register/> */}
+                </div>
+                <div className="login_wrap_right"></div>
+            </div>
         )
     }
 
