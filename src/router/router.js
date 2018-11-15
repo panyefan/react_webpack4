@@ -30,11 +30,11 @@ const router = {
             }
         },
         {
-            path: 'Test',        //Test页面
+            path: 'userManage',    //员工管理
             getComponent(nextState, callback) {
                 require.ensure([], require => {
-                    callback(null, require('../pages/Test/Test'));
-                }, 'Test');
+                    callback(null, require('../pages/userManage/userManage'));
+                }, 'userManage');
             }
         },
     ]

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon, Tabs } from 'antd';
-import { Login, Register } from '../components/LoginRegister/index';
+import { Login, Register, ForgetPassword } from '../components/LoginRegister/index';
 import PropTypes from 'prop-types';
 import './init.styl';
 
@@ -9,7 +9,7 @@ export default class Init extends Component {
         super(props, context);
         this.curTabKey = ''; // 当前激活的是哪个tab
         this.state = {
-            collapsed: false, // 是否折叠菜单
+            toggleArr: [true, false, false], // 触发登录，注册、忘记密码组件的切换显示
             activeKey: '',
             panes: [],
             acurrentTabKey: '',  // 当前激活的是哪个tab
@@ -170,15 +170,35 @@ export default class Init extends Component {
     }
 
     // menus
-    toggle = () => {
-        this.setState({
-            collapsed: !this.state.collapsed,
-        });
-    }
-
     menuClick = (obj) => {
         console.log(obj);
         obj.item.props.url && (location.href = obj.item.props.url);
+    }
+
+    // 切换到忘记密码组件
+    onForgetPassword = () => {
+        let toggleArr = this.state.toggleArr;
+        toggleArr = this.setArrEleTrue(toggleArr);
+        toggleArr[1] = true;
+        this.setState({toggleArr});
+    }
+    // 切换到注册组件
+    onRegister = () => {
+        let toggleArr = this.state.toggleArr;
+        toggleArr = this.setArrEleTrue(toggleArr);
+        toggleArr[2] = true;
+        this.setState({toggleArr});
+    }
+    // 切换到登录组件
+    onLogin = () => {
+        let toggleArr = this.state.toggleArr;
+        toggleArr = this.setArrEleTrue(toggleArr);
+        toggleArr[0] = true;
+        this.setState({toggleArr});
+    }
+    // 将数组元素全部设置为true
+    setArrEleTrue = (arr) => {
+        return arr && arr.map(() => { return false });
     }
 
 
@@ -202,47 +222,42 @@ export default class Init extends Component {
                     className="sider-menu"
                     trigger={null}
                     collapsible
-                    collapsed={this.state.collapsed}
                 >
-                    <div className="sider-menu-logo" />
+                    <div className="sider-menu-logo">
+                        <i className="logo"></i>
+                    </div>
                     <div className="sider-menu-wrap">
-                        <Menu theme="light" mode="inline" onClick={this.menuClick} defaultSelectedKeys={['1']}>
-                            <Menu.Item key="1" url="#/Test">
-                                <Icon type="user" />
-                                <span>test</span>
-                            </Menu.Item>
+                        <Menu theme="dark" mode="inline" onClick={this.menuClick} defaultSelectedKeys={['1']}>
                             <Menu.Item key="2" url="#/index">
                                 <Icon type="video-camera" />
-                                <span>login</span>
+                                <span>企业信息</span>
                             </Menu.Item>
                             <Menu.Item key="3">
                                 <Icon type="upload" />
-                                <span>nav 3</span>
+                                <span>资金预存</span>
                             </Menu.Item>
-                            <Menu.Item key="4">
-                                <Icon type="upload" />
-                                <span>nav 4</span>
+                            <Menu.Item key="4" url="#/userManage">
+                                <Icon type="upload"/>
+                                <span>员工管理</span>
                             </Menu.Item>
                             <Menu.Item key="5">
                                 <Icon type="upload" />
-                                <span>nav 5</span>
+                                <span>发放福利</span>
                             </Menu.Item>
                             <Menu.Item key="6">
                                 <Icon type="upload" />
-                                <span>nav 6</span>
+                                <span>对账统计</span>
+                            </Menu.Item>
+                            <Menu.Item key="7">
+                                <Icon type="upload" />
+                                <span>订单流水</span>
                             </Menu.Item>
                         </Menu>
                     </div>
                 </Sider>
-                <Layout className={this.state.collapsed ? 'layout-retract' : 'layout-elongation'}>
-                    <Header className="header_wrap">
-                        <Icon
-                            className="trigger"
-                            type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                            onClick={this.toggle}
-                        />
-                    </Header>
-                    <div className={`page_content ${this.state.collapsed ? 'page_content_fold' : 'page_content_unfold'}`}>
+                <Layout className="layout-elongation">
+                    <Header className="header_wrap"></Header>
+                    <div className="page_content">
                         <div className="min_width">
                             <Tabs
                                 hideAdd
@@ -251,7 +266,16 @@ export default class Init extends Component {
                                 type="editable-card"
                                 onEdit={this.onEdit}
                             >
-                                {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key}>{pane.content}</TabPane>)}
+                                {/* {this.state.panes.map(pane => {
+                                    <TabPane tab={pane.title} key={pane.key}>
+                                        <Content style={{ margin: '0 16px' }}>
+                                            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+                                                {pane.content}
+                                            </div>
+                                        </Content>
+                                    </TabPane>
+                                })} */}
+                                {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key}><Content style={{ background:'#F0F2F5',padding: '16px' }}><div style={{ padding: 24, background: '#fff', minHeight: 360 }}>{pane.content}</div></Content></TabPane>)}
                             </Tabs>
                         </div>
                     </div>
@@ -260,12 +284,14 @@ export default class Init extends Component {
         )
     }
 
-    renderLogin=()=>{
+    renderLogin = () => {
+        const { toggleArr } = this.state;
         return (
             <div className="login_wrap">
                 <div className="login_wrap_left">
-                    <Login/>
-                    {/* <Register/> */}
+                    {toggleArr[0] && <Login className="fadeIn" onForgetPassword={this.onForgetPassword} onRegister={this.onRegister} />}
+                    {toggleArr[1] && <Register className="fadeIn" onLogin={this.onLogin}/>}
+                    {toggleArr[2] && <ForgetPassword className="fadeIn" onLogin={this.onLogin}/>}
                 </div>
                 <div className="login_wrap_right"></div>
             </div>

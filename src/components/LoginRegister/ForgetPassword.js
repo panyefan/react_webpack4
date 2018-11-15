@@ -5,9 +5,9 @@ import { Regexp } from '../../utils/Regexp'
 import { Row, Col } from 'antd';
 import { Icon, Input, Button, Checkbox } from 'antd';
 
-import './Register.styl';
+import './ForgetPassword.styl';
 
-export default class Register extends React.Component {
+export default class ForgetPassword extends React.Component {
     static propTypes = {
     };
 
@@ -19,9 +19,7 @@ export default class Register extends React.Component {
         this.formDataObj = {};
         this.seconds = 5; // 倒计时60秒
         this.state = {
-            search: {
-                agreement: true
-            },
+            search: {},
             error_info: '错误信息',
             verifiCodeBtnState: false, // 验证码按钮失效状态
             verficationName: "发送验证码",
@@ -54,13 +52,6 @@ export default class Register extends React.Component {
         }, 1000);
     }
 
-    // 协议勾选框
-    agreementCheckbox=(e)=>{
-        let search = this.state.search;
-        search.agreement = e.target.checked;
-        search.agreementErr = '';
-        this.setState({search});
-    }
 
     handleChange = (e) => {
         e.target.value = e.target.value.replace(/^\s+|\s+$/gm, '');
@@ -143,28 +134,18 @@ export default class Register extends React.Component {
                 this.setState({ search });
                 return true;
             },
-            "agreement": () => {
-                if (!search.agreement) {
-                    search.agreementErr = "请勾选《福利卡平台服务协议》";
-                    this.setState({ search });
-                    return false;
-                }
-                search.agreementErr = "";
-                this.setState({ search });
-                return true;
-            },
         }
 
         return global.formCheck(name, handle);
     }
 
-    // 立即注册
+    // 找回密码
     saveFormData = () => {
         if (!this.check()) {
             return;
         }
 
-        console.log("立即注册");
+        console.log("找回密码");
     }
 
     gotologinCkick = () => {
@@ -181,7 +162,7 @@ export default class Register extends React.Component {
         return (
             <div className={cls} {...others}>
                 <div className="login_module_wrap">
-                    <div className="title">企业注册</div>
+                    <div className="title">忘记密码</div>
                     <div className="icon"></div>
                     <div className="login_panel_wrap">
                         <Row className="mb25">
@@ -206,11 +187,7 @@ export default class Register extends React.Component {
                             <div className="error_info">{search.confirmPasswordErr}</div>
                         </Row>
                         <Row className="mb25">
-                            <div><Checkbox onChange={this.agreementCheckbox}checked={search.agreement}></Checkbox><span>我同意并遵守<a>《福利卡平台服务协议》</a></span></div>
-                            <div className="error_info">{search.agreementErr}</div>
-                        </Row>
-                        <Row className="mb25">
-                            <Button type="primary" className="login_form_button" onClick={this.saveFormData}>立即注册</Button>
+                            <Button type="primary" className="login_form_button" onClick={this.saveFormData}>确定</Button>
                             <div className="error_info">{this.state.error_info}</div>
                         </Row>
                         <Row className="mb25">
@@ -222,3 +199,4 @@ export default class Register extends React.Component {
         );
     }
 }
+ 

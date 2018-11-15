@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Form, Input, Button } from 'antd';
+import { Input, Button } from 'antd';
 
 import './login.styl';
 import { locale } from 'moment';

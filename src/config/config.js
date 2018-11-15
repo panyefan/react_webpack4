@@ -5,9 +5,10 @@ import Utils from '../utils/Utils';
 // 初始化一个全局变量对象
 global.SC = {
     baseUrl: '',
-    loginFlag: false,
+    loginFlag: true,
     loginUrl: '#/login',
-    indexUrl: '#/index',
+    // indexUrl: '#/index',
+    indexUrl: '#/userManage',
 }
 
 if (process.env.NODE_ENV != 'production') { // 开发环境
@@ -17,6 +18,19 @@ if (process.env.NODE_ENV != 'production') { // 开发环境
 
 global.initHoldPages = () => {
     console.log("全局方法");
+}
+
+// 表单校验
+global.formCheck = (name, handle) => {
+    if (name) {
+        return handle[name]();
+    } else {
+        let temp = [];
+        Object.keys(handle).map((item) => {
+            temp.push(handle[item]());
+        });
+        return !temp.includes(false);
+    }
 }
 
 // 退出登录，登录超时的时候需要将其数据清空

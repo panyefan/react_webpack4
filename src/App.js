@@ -9,4 +9,9 @@ import './config/config';//加载配置参数
 import {Provider} from 'mobx-react'; // 全局引用mobx文件
 import stores from './store/store.js';
 
-render(<Provider {...stores}><Router history={hashHistory} routes={router}/></Provider>,document.getElementById('container'));
+// 引用antd的中文包
+import { LocaleProvider } from 'antd';
+import zh_CN from 'antd/lib/locale-provider/zh_CN';
+import 'moment/locale/zh-cn';
+
+render(<LocaleProvider locale={zh_CN}><Provider {...stores}><Router history={hashHistory} routes={router}/></Provider></LocaleProvider>,document.getElementById('container'));

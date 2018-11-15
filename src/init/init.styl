@@ -9,26 +9,29 @@
         &:hover
             color: #1890ff;
 
-.layout-retract
-    margin-left: 80px;
-    transition: all .2s;
-
 .layout-elongation
     margin-left: 200px;
-    transition: all .2s;
 
 .sider-menu
     position: fixed;
     height: 100%;
     left: 0;
     z-index: 999;
-    background: #fff;
     box-shadow: 2px 0 6px 0 rgba(0,21,41,0.35);
 
 .ant-layout-sider-children
     .sider-menu-logo
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: 64px;
-        background: #3F51B5;
+        background: #002140;
+        .logo
+            display: inline-block;
+            width: 45px;
+            height: 31px;
+            background: url('../images/logo.png') no-repeat;
+            background-size: 100% 100%; 
     .sider-menu-wrap
         height: 100%;
         overflow:auto;
@@ -57,6 +60,7 @@
     right: 0;
     top: 64px;
     bottom: 0;
+    left:200px;
     transition: left .2s;
     overflow:auto;
     -webkit-overflow-scrolling:touch;
@@ -73,10 +77,6 @@
 .min_width
     min-width: 1250px;
     
-.page_content_unfold
-        left:200px;
-.page_content_fold
-        left:80px;
 
 // 登录
 .login_wrap
@@ -91,3 +91,15 @@
         flex: 1;
         background: url('../images/banner01.png') no-repeat;
         background-size: 100% 100%; 
+
+.fadeIn
+    -webkit-animation:myfadeIn 1s .2s ease both;
+
+@keyframes myfadeIn
+    0%
+        opacity:0;
+    100%
+        opacity:1;
+
+.ant-tabs-bar
+    margin: 0

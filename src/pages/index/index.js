@@ -1,4 +1,5 @@
 import React from 'react';
+import {CompanyDetail, CompanyAddEdit} from '../../components/Company/index';
 
 import './index.styl';
 
@@ -19,7 +20,8 @@ export default class Index extends React.Component {
     render() {
         return (
             <div>
-                我是首页
+                <CompanyDetail></CompanyDetail>
+                {/* <CompanyAddEdit></CompanyAddEdit> */}
             </div>
         )
     }
