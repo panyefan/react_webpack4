@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Regexp } from '../../utils/Regexp'
+import { UploadPic } from '../../components/Upload/index';
 import { Row, Col, Divider, Input, Button, Checkbox,Steps, Icon } from 'antd';
 
 import './CompanyAddEdit.styl';
@@ -148,6 +149,14 @@ export default class CompanyAddEdit extends React.Component {
         // this.props.onLogin ? this.props.onLogin() : null;
     }
 
+    // 图片上传回调
+    uploadImg = (info) => {
+        console.log(info);
+        // if (info.file.status === 'done') {
+
+        // }
+    }
+
     render() {
         const { className, ...others } = this.props;
         const Step = Steps.Step;
@@ -170,55 +179,61 @@ export default class CompanyAddEdit extends React.Component {
                             <div>公司信息</div>
                             <Divider style={{margin:'10px 0 24px 0'}}></Divider>
                         </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>统一社会信用代码</Col>
                             <Col span={12}>
                                 <Input className="width350" placeholder="输入统一社会信用代码" maxLength="30" name="userName" onChange={this.handleChange}/>
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>行业类别</Col>
                             <Col span={12}>
                                 <Input className="width350" placeholder="输入行业类别" maxLength="30" name="userName" onChange={this.handleChange}/>
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>客服电话</Col>
                             <Col span={12}>
                                 <Input className="width350" placeholder="输入客服电话" maxLength="30" name="userName" onChange={this.handleChange}/>
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>办公地址</Col>
                             <Col span={12}>
                                 <Input className="width350" placeholder="输入办公地址" maxLength="30" name="userName" onChange={this.handleChange}/>
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>详细地址</Col>
                             <Col span={12}>
                                 <Input className="width350" placeholder="输入详细地址" maxLength="30" name="userName" onChange={this.handleChange}/>
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>公司邮箱</Col>
                             <Col span={12}>
                                 <Input className="width350" placeholder="输入公司邮箱" maxLength="30" name="userName" onChange={this.handleChange}/>
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>营业执照</Col>
                             <Col span={12}>
+                                <UploadPic
+                                    title="营业执照"
+                                    uploadKey="xixixi"
+                                    action="//jsonplaceholder.typicode.com/posts/"
+                                    onChange={this.uploadImg}
+                                ></UploadPic>
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
-                        <div className="mb25 hc">
+                        <div className="mb25 xc">
                             <Button type="primary">下一步</Button>
                         </div>
                     </div> */}
@@ -227,68 +242,42 @@ export default class CompanyAddEdit extends React.Component {
                             <div>证件上传</div>
                             <Divider style={{margin:'10px 0 24px 0'}}></Divider>
                         </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>法人姓名</Col>
                             <Col span={12}>
                                 <Input className="width350" placeholder="输入法人姓名" maxLength="30" name="userName" onChange={this.handleChange}/>
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>法人身份证号</Col>
                             <Col span={12}>
                                 <Input className="width350" placeholder="输入法人身份证号" maxLength="30" name="userName" onChange={this.handleChange}/>
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>法人身份证照片</Col>
-                            <Col span={12}>
+                            <Col span={3}>
+                                <UploadPic
+                                    title="身份证正面"
+                                    uploadKey="xixixi"
+                                    action="//jsonplaceholder.typicode.com/posts/"
+                                    onChange={this.uploadImg}
+                                ></UploadPic>
+                                <div className="error_info">{search.userNameErr}</div>
+                            </Col>
+                            <Col span={3}>
+                                <UploadPic
+                                    title="身份证反面"
+                                    uploadKey="xixixi"
+                                    action="//jsonplaceholder.typicode.com/posts/"
+                                    onChange={this.uploadImg}
+                                ></UploadPic>
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
-                        <Row className="mb25" gutter={16}>
-                            <Col span={2} offset={10}>
-                                <Button >上一步</Button>
-                            </Col>
-                            <Col span={2}>
-                                <Button type="primary">下一步</Button>
-                            </Col>
-                        </Row>
-                    </div> */}
-                    {/* <div className="cad_input_wrap">
-                        <Row>
-                            <div>企业银行账户</div>
-                            <Divider style={{margin:'10px 0 24px 0'}}></Divider>
-                        </Row>
-                        <Row className="mb25" gutter={16}>
-                            <Col className="tr" span={3}>开户名称</Col>
-                            <Col span={12}>
-                                <Input className="width350" placeholder="输入开户名称" maxLength="30" name="userName" onChange={this.handleChange}/>
-                                <div className="error_info">{search.userNameErr}</div>
-                            </Col>
-                        </Row>
-                        <Row className="mb25" gutter={16}>
-                            <Col className="tr" span={3}>开户账号</Col>
-                            <Col span={12}>
-                                <Input className="width350" placeholder="输入开户账号" maxLength="30" name="userName" onChange={this.handleChange}/>
-                                <div className="error_info">{search.userNameErr}</div>
-                            </Col>
-                        </Row>
-                        <Row className="mb25" gutter={16}>
-                            <Col className="tr" span={3}>开户银行</Col>
-                            <Col span={12}>
-                                <Input className="width350" placeholder="输入开户银行" maxLength="30" name="userName" onChange={this.handleChange}/>
-                                <div className="error_info">{search.userNameErr}</div>
-                            </Col>
-                        </Row>
-                        <Row className="mb25" gutter={16}>
-                            <Col className="tr" span={3}>开户许可证</Col>
-                            <Col span={12}>
-                                <div className="error_info">{search.userNameErr}</div>
-                            </Col>
-                        </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col span={2} offset={10}>
                                 <Button >上一步</Button>
                             </Col>
@@ -299,52 +288,99 @@ export default class CompanyAddEdit extends React.Component {
                     </div> */}
                     <div className="cad_input_wrap">
                         <Row>
-                            <div>开票信息</div>
+                            <div>企业银行账户</div>
                             <Divider style={{margin:'10px 0 24px 0'}}></Divider>
                         </Row>
-                        <Row className="mb25" gutter={16}>
-                            <Col className="tr" span={3}>发票抬头</Col>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
+                            <Col className="tr" span={3}>开户名称</Col>
                             <Col span={12}>
-                                <Input className="width350" placeholder="输入发票抬头" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <Input className="width350" placeholder="输入开户名称" maxLength="30" name="userName" onChange={this.handleChange}/>
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
-                        <Row className="mb25" gutter={16}>
-                            <Col className="tr" span={3}>信用代码</Col>
-                            <Col span={12}>
-                                <Input className="width350" placeholder="输入信用代码" maxLength="30" name="userName" onChange={this.handleChange}/>
-                                <div className="error_info">{search.userNameErr}</div>
-                            </Col>
-                        </Row>
-                        <Row className="mb25" gutter={16}>
-                            <Col className="tr" span={3}>注册地址</Col>
-                            <Col span={12}>
-                                <Input className="width350" placeholder="输入注册地址" maxLength="30" name="userName" onChange={this.handleChange}/>
-                                <div className="error_info">{search.userNameErr}</div>
-                            </Col>
-                        </Row>
-                        <Row className="mb25" gutter={16}>
-                            <Col className="tr" span={3}>公司电话</Col>
-                            <Col span={12}>
-                                <Input className="width350" placeholder="输入公司电话" maxLength="30" name="userName" onChange={this.handleChange}/>
-                                <div className="error_info">{search.userNameErr}</div>
-                            </Col>
-                        </Row>
-                        <Row className="mb25" gutter={16}>
-                            <Col className="tr" span={3}>开户银行</Col>
-                            <Col span={12}>
-                                <Input className="width350" placeholder="输入开户银行" maxLength="30" name="userName" onChange={this.handleChange}/>
-                                <div className="error_info">{search.userNameErr}</div>
-                            </Col>
-                        </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>开户账号</Col>
                             <Col span={12}>
                                 <Input className="width350" placeholder="输入开户账号" maxLength="30" name="userName" onChange={this.handleChange}/>
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
-                        <Row className="mb25" gutter={16}>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
+                            <Col className="tr" span={3}>开户银行</Col>
+                            <Col span={12}>
+                                <Input className="width350" placeholder="输入开户银行" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <div className="error_info">{search.userNameErr}</div>
+                            </Col>
+                        </Row>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
+                            <Col className="tr" span={3}>开户许可证</Col>
+                            <Col span={12}>
+                                <UploadPic
+                                    title="开户许可证"
+                                    uploadKey="xixixi"
+                                    action="//jsonplaceholder.typicode.com/posts/"
+                                    onChange={this.uploadImg}
+                                ></UploadPic>
+                                <div className="error_info">{search.userNameErr}</div>
+                            </Col>
+                        </Row>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
+                            <Col span={2} offset={10}>
+                                <Button >上一步</Button>
+                            </Col>
+                            <Col span={2}>
+                                <Button type="primary">下一步</Button>
+                            </Col>
+                        </Row>
+                    </div>
+                    {/* <div className="cad_input_wrap">
+                        <Row>
+                            <div>开票信息</div>
+                            <Divider style={{margin:'10px 0 24px 0'}}></Divider>
+                        </Row>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
+                            <Col className="tr" span={3}>发票抬头</Col>
+                            <Col span={12}>
+                                <Input className="width350" placeholder="输入发票抬头" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <div className="error_info">{search.userNameErr}</div>
+                            </Col>
+                        </Row>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
+                            <Col className="tr" span={3}>信用代码</Col>
+                            <Col span={12}>
+                                <Input className="width350" placeholder="输入信用代码" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <div className="error_info">{search.userNameErr}</div>
+                            </Col>
+                        </Row>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
+                            <Col className="tr" span={3}>注册地址</Col>
+                            <Col span={12}>
+                                <Input className="width350" placeholder="输入注册地址" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <div className="error_info">{search.userNameErr}</div>
+                            </Col>
+                        </Row>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
+                            <Col className="tr" span={3}>公司电话</Col>
+                            <Col span={12}>
+                                <Input className="width350" placeholder="输入公司电话" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <div className="error_info">{search.userNameErr}</div>
+                            </Col>
+                        </Row>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
+                            <Col className="tr" span={3}>开户银行</Col>
+                            <Col span={12}>
+                                <Input className="width350" placeholder="输入开户银行" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <div className="error_info">{search.userNameErr}</div>
+                            </Col>
+                        </Row>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
+                            <Col className="tr" span={3}>开户账号</Col>
+                            <Col span={12}>
+                                <Input className="width350" placeholder="输入开户账号" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <div className="error_info">{search.userNameErr}</div>
+                            </Col>
+                        </Row>
+                        <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col span={2} offset={10}>
                                 <Button >上一步</Button>
                             </Col>
@@ -352,7 +388,7 @@ export default class CompanyAddEdit extends React.Component {
                                 <Button type="primary">提交</Button>
                             </Col>
                         </Row>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         );

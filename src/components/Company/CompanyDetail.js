@@ -105,31 +105,31 @@ export default class CompanyDetail extends React.Component {
                             style={{ width: 500 }}
                             extra={<Button type="primary" icon="edit" onClick={this.companyInfoEdit}>编辑</Button>}
                         >
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>统一社会信用代码</Col>
                                 <Col span={12}>234999809000892</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>行业类别</Col>
                                 <Col span={12}>支付行业</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>客服电话</Col>
                                 <Col span={12}>支付行业</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>办公地址</Col>
                                 <Col span={12}>支付行业</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>详细地址</Col>
                                 <Col span={12}>支付行业</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>企业邮箱</Col>
                                 <Col span={12}>支付行业</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>银行卡照片</Col>
                                 <Col span={12}><img className="pic_img" src={require('../../images/banner01.png')}></img></Col>
                             </Row>
@@ -141,19 +141,19 @@ export default class CompanyDetail extends React.Component {
                             style={{ width: 500, marginTop: '20px' }}
                             extra={<Button type="primary" icon="edit" onClick={this.companyInfoEdit}>编辑</Button>}
                         >
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>开户名称</Col>
                                 <Col span={12}>234999809000892</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>开户账号</Col>
                                 <Col span={12}>234999809000892</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>开户银行</Col>
                                 <Col span={12}>支付行业</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>银行卡照片</Col>
                                 <Col span={12}><img className="pic_img" src={require('../../images/banner01.png')}></img></Col>
                             </Row>
@@ -167,15 +167,15 @@ export default class CompanyDetail extends React.Component {
                             style={{ width: 500 }}
                             extra={<Button type="primary" icon="edit" onClick={this.companyInfoEdit}>编辑</Button>}
                         >
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>法人姓名</Col>
                                 <Col span={12}>234999809000892</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>法人身份证号</Col>
                                 <Col span={12}>支付行业</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>法人身份证照</Col>
                                 <Col span={8}><img className="pic_img" src={require('../../images/banner01.png')}></img></Col>
                                 <Col span={8}><img className="pic_img" src={require('../../images/banner01.png')}></img></Col>
@@ -188,27 +188,27 @@ export default class CompanyDetail extends React.Component {
                             style={{ width: 500, marginTop: '20px' }}
                             extra={<Button type="primary" icon="edit" onClick={this.companyInfoEdit}>编辑</Button>}
                         >
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>发票抬头</Col>
                                 <Col span={12}>234999809000892</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>信用代码</Col>
                                 <Col span={12}>234999809000892</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>注册地址</Col>
                                 <Col span={12}>支付行业</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>公司电话</Col>
                                 <Col span={12}>支付行业</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>开户银行</Col>
                                 <Col span={12}>支付行业</Col>
                             </Row>
-                            <Row className="mb25" gutter={16}>
+                            <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col span={4}>开户账号</Col>
                                 <Col span={12}>支付行业</Col>
                             </Row>

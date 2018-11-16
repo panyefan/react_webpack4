@@ -1,6 +1,7 @@
 import React from 'react';
-import { Row, Col, Divider, Input, Button, Icon, Table, Dropdown, Menu, Badge, Modal } from 'antd';
+import { Row, Col, Divider, Input, Button, Icon, Table, Dropdown, Menu, Badge, Modal, message } from 'antd';
 import Utils from '../../utils/Utils';
+import { UploadFile, UploadPic } from '../../components/Upload/index';
 import './userManage.styl';
 
 export default class userManage extends React.Component {
@@ -70,6 +71,9 @@ export default class userManage extends React.Component {
                 showLoading: false, // 表格是否显示load
 
                 addEmpVisible: false, // 是否显示添加员工对话框
+                addEmpSearch: {}, // 添加员工对话框的输入值
+                batchAddVisible: false, // 是否显示批量新增对话框
+                batchUpdateVisible: false, // 是否显示批量修改对话框
 
 
             }
@@ -84,8 +88,38 @@ export default class userManage extends React.Component {
     addEmpOk = () => {
         console.log("添加员工");
     }
+    // 确认批量新增
+    batchAddVisibleOk = () => {
+
+        console.log("批量新增");
+        
+        // 调用组件里面的方法
+        let formData = this.refs.refUploadFile.getUploadFile();
+        this.fileUrlPath = 'https://jsonplaceholder.typicode.com/posts/';
+        request.post(this.fileUrlPath, formData).then(response => {
+            message.success('上传成功');
+        }, err => {
+            message.error('上传失败');
+        }).catch((error) => {
+            message.error('上传失败');
+        });
+    }
+    // 确认批量新增
+    batchUpdateVisibleOk = () => {
+        console.log("批量修改");
+    }
+
+    // 图片上传回调
+    uploadImg = (info) => {
+        console.log(info);
+        // if (info.file.status === 'done') {
+
+        // }
+    }
+
 
     render() {
+        const { addEmpSearch } = this.state;
         let payPagination = {
             showQuickJumper: true,
             showSizeChanger: true,
@@ -96,11 +130,17 @@ export default class userManage extends React.Component {
         }
         return (
             <div className="user_manage_wrap">
+                <UploadPic
+                    title="身份证照"
+                    uploadKey="xixixi"
+                    action="//jsonplaceholder.typicode.com/posts/"
+                    onChange={this.uploadImg}
+                ></UploadPic>
                 <div className="user_manage_head">
                     <span>在职员工总数：<span className="num">888</span>人</span>
                     <Button className="ml30" type="primary" icon="poweroff" onClick={() => this.setState({ addEmpVisible: true })}>添加员工</Button>
-                    <Button className="ml30" type="primary" icon="poweroff">批量新增</Button>
-                    <Button className="ml30" type="primary" icon="poweroff">批量修改</Button>
+                    <Button className="ml30" type="primary" icon="poweroff" onClick={() => { this.setState({ batchAddVisible: true }) }}>批量新增</Button>
+                    <Button className="ml30" type="primary" icon="poweroff" onClick={()=>this.setState({batchUpdateVisible: true})}>批量修改</Button>
                     <Divider></Divider>
                 </div>
                 <div className="query_flex">
@@ -172,13 +212,80 @@ export default class userManage extends React.Component {
 
                 <Modal
                     title="添加员工"
-                    visible={this.state.addEmpVisible }
+                    centered
+                    width="700"
+                    visible={this.state.addEmpVisible}
                     onOk={this.addEmpOk}
-                    onCancel={() => this.setState({ addEmpVisible: false }) }
+                    onCancel={() => this.setState({ addEmpVisible: false })}
                 >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                    <Row type="flex" align="middle" className="mb25" gutter={16}>
+                        <Col className="tr" span={3}>姓名</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                        <Col className="tr" span={3}>手机号码</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                    </Row>
+                    <Row type="flex" align="middle" className="mb25" gutter={16}>
+                        <Col className="tr" span={3}>部门</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                        <Col className="tr" span={3}>职位</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                    </Row>
+                    <Row type="flex" align="middle" className="mb25" gutter={16}>
+                        <Col className="tr" span={3}>职级</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                        <Col className="tr" span={3}>身份号码</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                    </Row>
+                </Modal>
+                <Modal
+                    title="批量新增"
+                    centered
+                    visible={this.state.batchAddVisible}
+                    onOk={this.batchAddVisibleOk}
+                    onCancel={() => this.setState({ batchAddVisible: false })}
+                >
+                    <Row type="flex" justify="space-around" align="middle">
+                        <Col span={6}>
+                            <Button icon="download">下载模板</Button>
+                        </Col>
+                        <Col span={1}>
+                            <Divider type="vertical" style={{ height: '86px' }} />
+                        </Col>
+                        <Col span={6} >
+                            <UploadFile ref="refUploadFile" uploadKey="haha"></UploadFile>
+                        </Col>
+                    </Row>
+                </Modal>
+                <Modal
+                    title="批量修改"
+                    centered
+                    visible={this.state.batchUpdateVisible}
+                    onOk={this.batchUpdateVisibleOk}
+                    onCancel={() => this.setState({ batchUpdateVisible: false })}
+                >
+                    <Row type="flex" justify="center" align="middle">
+                        <Col span={6}>
+                            <Button icon="download">导出员工信息</Button>
+                        </Col>
+                    </Row>
                 </Modal>
             </div>
         )

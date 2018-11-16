@@ -20,8 +20,8 @@ export default class Index extends React.Component {
     render() {
         return (
             <div>
-                <CompanyDetail></CompanyDetail>
-                {/* <CompanyAddEdit></CompanyAddEdit> */}
+                {/* <CompanyDetail></CompanyDetail> */}
+                <CompanyAddEdit></CompanyAddEdit>
             </div>
         )
     }
