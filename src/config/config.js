@@ -7,8 +7,8 @@ global.SC = {
     baseUrl: '',
     loginFlag: true,
     loginUrl: '#/login',
-    // indexUrl: '#/index',
-    indexUrl: '#/userManage',
+    indexUrl: '#/index',
+    // indexUrl: '#/userManage',
 }
 
 if (process.env.NODE_ENV != 'production') { // 开发环境

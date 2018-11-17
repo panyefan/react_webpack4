@@ -6,16 +6,28 @@ export default class Utils {
      * tableData: 列表表头数组
      * 返回新的表头数组
      */
-	static resetTableTh = (tableData = []) => {
-		if (tableData.length < 0) return [];
+    static resetTableTh = (tableData = []) => {
+        if (tableData.length < 0) return [];
 
-		let newTableData = tableData.filter((currentValue, index, arr) => {
-			return (!currentValue.hasOwnProperty('isShow') || currentValue.isShow);
-		})
-		
-		return newTableData;
+        let newTableData = tableData.filter((currentValue, index, arr) => {
+            return (!currentValue.hasOwnProperty('isShow') || currentValue.isShow);
+        })
+
+        return newTableData;
     }
-    
+
+    /**
+     * str传入的字符串，n为保留的字符长度
+     * 传入1234567，结果为：123456...
+     */
+    static getSubStr(str, n = 6) {
+        if (str) {
+            return str.length > n ? `${str.substr(0, n)}...` : str;
+        } else {
+            return str;
+        }
+    }
+
     /**
      * num传入的数字，n需要的字符长度
      * 传入6，需要的字符长度为3，结果为：006
@@ -23,6 +35,7 @@ export default class Utils {
     static PrefixInteger(num, n) {
         return (Array(n).join(0) + num).slice(-n);
     }
+
     /**
      * 不足两位前面补零
      */

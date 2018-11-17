@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Divider, Input, Button, Icon, Table, Dropdown, Menu, Badge, Modal, message } from 'antd';
 import Utils from '../../utils/Utils';
-import { UploadFile, UploadPic } from '../../components/Upload/index';
+import { UploadFile } from '../../components/Upload/index';
 import './userManage.styl';
 
 export default class userManage extends React.Component {
@@ -117,7 +117,6 @@ export default class userManage extends React.Component {
         // }
     }
 
-
     render() {
         const { addEmpSearch } = this.state;
         let payPagination = {
@@ -130,12 +129,6 @@ export default class userManage extends React.Component {
         }
         return (
             <div className="user_manage_wrap">
-                <UploadPic
-                    title="身份证照"
-                    uploadKey="xixixi"
-                    action="//jsonplaceholder.typicode.com/posts/"
-                    onChange={this.uploadImg}
-                ></UploadPic>
                 <div className="user_manage_head">
                     <span>在职员工总数：<span className="num">888</span>人</span>
                     <Button className="ml30" type="primary" icon="poweroff" onClick={() => this.setState({ addEmpVisible: true })}>添加员工</Button>

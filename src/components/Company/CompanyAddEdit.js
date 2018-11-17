@@ -2,8 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Regexp } from '../../utils/Regexp'
+import { CityData } from '../../utils/CityData'
+import { IndustryTypeData } from '../../utils/IndustryTypeData'
 import { UploadPic } from '../../components/Upload/index';
-import { Row, Col, Divider, Input, Button, Checkbox,Steps, Icon } from 'antd';
+import { Row, Col, Divider, Input, Button, Checkbox, Steps, Icon, Cascader } from 'antd';
 
 import './CompanyAddEdit.styl';
 
@@ -28,16 +30,44 @@ export default class CompanyAddEdit extends React.Component {
     }
 
     componentDidMount() {
+        // console.log(CityData);
+        // console.log(IndustryTypeData);
+
+        // let province = [];
+        // let temp = CityData;
+        // let keys = Object.keys(temp);
+        // keys.sort();
+        // for (let k of keys) {
+        //     let city = [];
+        //     let cityObj = temp[k]['city'];
+        //     let citykeys = Object.keys(cityObj);
+        //     citykeys.sort();
+        //     for (let ck of citykeys) {
+        //         let area = [];
+        //         let areaObj = cityObj[ck]['area'];
+        //         let areakeys = Object.keys(areaObj);
+        //         areakeys.sort();
+        //         for (let ak of areakeys) {
+        //             area.push({ value: areaObj[ak]['value'], label: areaObj[ak]['text'] })
+        //         }
+
+        //         city.push({ value: cityObj[ck]['value'], label: cityObj[ck]['text'],children:area })
+        //     }
+
+        //     province.push({ value: temp[k]['value'], label: temp[k]['text'],children:city })
+        // }
+
+        // console.log(JSON.stringify(province));
 
     }
 
 
     // 协议勾选框
-    agreementCheckbox=(e)=>{
+    agreementCheckbox = (e) => {
         let search = this.state.search;
         search.agreement = e.target.checked;
         search.agreementErr = '';
-        this.setState({search});
+        this.setState({ search });
     }
 
     handleChange = (e) => {
@@ -157,67 +187,72 @@ export default class CompanyAddEdit extends React.Component {
         // }
     }
 
+    // 省市区三级联动
+    onCityChange = (value, selectedOptions) => {
+        console.log(value, selectedOptions);
+    }
+
     render() {
         const { className, ...others } = this.props;
         const Step = Steps.Step;
         const { search } = this.state;
-        const cls=classNames({
-            [className]:className
+        const cls = classNames({
+            [className]: className
         });
 
         return (
             <div className={cls} {...others}>
                 <div className="cad_module_wrap">
-                    <Steps style={{padding: '0 100px'}}>
+                    <Steps style={{ padding: '0 100px' }}>
                         <Step status="finish" title="公司信息" icon={<Icon type="solution" />} />
                         <Step status="finish" title="证件上传" icon={<Icon type="solution" />} />
                         <Step status="wait" title="企业银行账户" icon={<Icon type="solution" />} />
                         <Step status="wait" title="开票信息" icon={<Icon type="credit-card" />} />
                     </Steps>
-                    {/* <div className="cad_input_wrap">
+                    <div className="cad_input_wrap">
                         <Row>
                             <div>公司信息</div>
-                            <Divider style={{margin:'10px 0 24px 0'}}></Divider>
+                            <Divider style={{ margin: '10px 0 24px 0' }}></Divider>
                         </Row>
                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>统一社会信用代码</Col>
                             <Col span={12}>
-                                <Input className="width350" placeholder="输入统一社会信用代码" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <Input className="width350" placeholder="输入统一社会信用代码" maxLength="30" name="userName" onChange={this.handleChange} />
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>行业类别</Col>
                             <Col span={12}>
-                                <Input className="width350" placeholder="输入行业类别" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                {/* <Cascader className="width350" placeholder="选择行业类别" options={CityData} expandTrigger="hover" onChange={this.onCityChange} /> */}
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>客服电话</Col>
                             <Col span={12}>
-                                <Input className="width350" placeholder="输入客服电话" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <Input className="width350" placeholder="输入客服电话" maxLength="30" name="userName" onChange={this.handleChange} />
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>办公地址</Col>
                             <Col span={12}>
-                                <Input className="width350" placeholder="输入办公地址" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <Cascader className="width350" placeholder="选择办公地址" options={CityData} expandTrigger="hover" onChange={this.onCityChange} />
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>详细地址</Col>
                             <Col span={12}>
-                                <Input className="width350" placeholder="输入详细地址" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <Input className="width350" placeholder="输入详细地址" maxLength="30" name="userName" onChange={this.handleChange} />
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>公司邮箱</Col>
                             <Col span={12}>
-                                <Input className="width350" placeholder="输入公司邮箱" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <Input className="width350" placeholder="输入公司邮箱" maxLength="30" name="userName" onChange={this.handleChange} />
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
@@ -227,7 +262,8 @@ export default class CompanyAddEdit extends React.Component {
                                 <UploadPic
                                     title="营业执照"
                                     uploadKey="xixixi"
-                                    action="//jsonplaceholder.typicode.com/posts/"
+                                    uploadURL="//jsonplaceholder.typicode.com/posts/"
+                                    picURL=""
                                     onChange={this.uploadImg}
                                 ></UploadPic>
                                 <div className="error_info">{search.userNameErr}</div>
@@ -236,7 +272,7 @@ export default class CompanyAddEdit extends React.Component {
                         <div className="mb25 xc">
                             <Button type="primary">下一步</Button>
                         </div>
-                    </div> */}
+                    </div>
                     {/* <div className="cad_input_wrap">
                         <Row>
                             <div>证件上传</div>
@@ -262,7 +298,8 @@ export default class CompanyAddEdit extends React.Component {
                                 <UploadPic
                                     title="身份证正面"
                                     uploadKey="xixixi"
-                                    action="//jsonplaceholder.typicode.com/posts/"
+                                    uploadURL="//jsonplaceholder.typicode.com/posts/"
+                                    picURL=""
                                     onChange={this.uploadImg}
                                 ></UploadPic>
                                 <div className="error_info">{search.userNameErr}</div>
@@ -271,7 +308,8 @@ export default class CompanyAddEdit extends React.Component {
                                 <UploadPic
                                     title="身份证反面"
                                     uploadKey="xixixi"
-                                    action="//jsonplaceholder.typicode.com/posts/"
+                                    uploadURL="//jsonplaceholder.typicode.com/posts/"
+                                    picURL=""
                                     onChange={this.uploadImg}
                                 ></UploadPic>
                                 <div className="error_info">{search.userNameErr}</div>
@@ -286,29 +324,29 @@ export default class CompanyAddEdit extends React.Component {
                             </Col>
                         </Row>
                     </div> */}
-                    <div className="cad_input_wrap">
+                    {/* <div className="cad_input_wrap">
                         <Row>
                             <div>企业银行账户</div>
-                            <Divider style={{margin:'10px 0 24px 0'}}></Divider>
+                            <Divider style={{ margin: '10px 0 24px 0' }}></Divider>
                         </Row>
                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>开户名称</Col>
                             <Col span={12}>
-                                <Input className="width350" placeholder="输入开户名称" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <Input className="width350" placeholder="输入开户名称" maxLength="30" name="userName" onChange={this.handleChange} />
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>开户账号</Col>
                             <Col span={12}>
-                                <Input className="width350" placeholder="输入开户账号" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <Input className="width350" placeholder="输入开户账号" maxLength="30" name="userName" onChange={this.handleChange} />
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                             <Col className="tr" span={3}>开户银行</Col>
                             <Col span={12}>
-                                <Input className="width350" placeholder="输入开户银行" maxLength="30" name="userName" onChange={this.handleChange}/>
+                                <Input className="width350" placeholder="输入开户银行" maxLength="30" name="userName" onChange={this.handleChange} />
                                 <div className="error_info">{search.userNameErr}</div>
                             </Col>
                         </Row>
@@ -318,7 +356,8 @@ export default class CompanyAddEdit extends React.Component {
                                 <UploadPic
                                     title="开户许可证"
                                     uploadKey="xixixi"
-                                    action="//jsonplaceholder.typicode.com/posts/"
+                                    uploadURL="//jsonplaceholder.typicode.com/posts/"
+                                    picURL=""
                                     onChange={this.uploadImg}
                                 ></UploadPic>
                                 <div className="error_info">{search.userNameErr}</div>
@@ -332,7 +371,7 @@ export default class CompanyAddEdit extends React.Component {
                                 <Button type="primary">下一步</Button>
                             </Col>
                         </Row>
-                    </div>
+                    </div> */}
                     {/* <div className="cad_input_wrap">
                         <Row>
                             <div>开票信息</div>

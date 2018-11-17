@@ -10,19 +10,21 @@ export default class UploadPic extends React.Component {
     static propTypes = {
         uploadKey: PropTypes.string,
         title: PropTypes.string,
-        action: PropTypes.string.isRequired,
+        uploadURL: PropTypes.string.isRequired,
+        picURL: PropTypes.string,
     };
 
     static defaultProps = {
         uploadKey: "uploadKey",
         title: "",
+        picURL: "",
     };
 
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
-            imageUrl: '',
+            imageUrl: props.picURL,
             uploadSize: 2, // 文件上传大小 2MB
         };
     }
@@ -46,10 +48,10 @@ export default class UploadPic extends React.Component {
     fileCheck = (file) => {
         let name = file.name;
         let size = file.size;
-        let type = name.substring(name.lastIndexOf('.') + 1);
+        let type = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
 
 
-        let regEn = /[`~!@#$%^&*()_+<>?:"{},\/;'[\]]/im;
+        let regEn = /[`~!@#$%^&*()+<>?:"{},\/;'[\]]/im;
         let regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
         if (regEn.test(name) || regCn.test(name)) {
             message.error('上传文件的名称不能含有特殊字符');
@@ -92,7 +94,7 @@ export default class UploadPic extends React.Component {
     }
 
     render() {
-        const { className, uploadKey, action, onChange, title, ...others } = this.props;
+        const { className, uploadKey, uploadURL, picURL, onChange, title, ...others } = this.props;
         const cls = classNames({
             [className]: className
         });
@@ -108,7 +110,7 @@ export default class UploadPic extends React.Component {
             showUploadList: false,// 是否显示上传列表
             multiple: false, // 是否多文件上传
             listType: "picture-card",
-            action: action,
+            action: uploadURL,
             onChange: this.handleChange
         };
 
@@ -123,7 +125,7 @@ export default class UploadPic extends React.Component {
         return (
             <div className={`upload_pic_wrap ${cls}`} {...others}>
                 <Upload {...uploadProps}>
-                    {imageUrl ? <img src={imageUrl} alt="图片" /> : uploadButton}
+                    {imageUrl ? <img className="upload_pic_img" src={imageUrl} alt="图片" /> : uploadButton}
                 </Upload>
                 <div className="title_desc">{title}</div>
             </div>

@@ -1,4 +1,4 @@
-let allData = [
+export const IndustryTypeData = [
     {
         "createUser": 0,
         "createUserName": "system",
@@ -3619,5 +3619,3 @@ let allData = [
         "dealTypeCnt": "全部"
     }
 ];
-
-export default allData;

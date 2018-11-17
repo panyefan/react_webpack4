@@ -162,10 +162,8 @@ export default class Init extends Component {
             activeKey = panes[lastIndex + 1].key;
             this.context.router.push(activeKey + '?' + (sessionStorage.getItem(activeKey) || ''));
         } else if (panes.length === 0) {
-            console.log(this.context);
             this.context.router.push(path);
         }
-        console.log(panes, activeKey);
         this.setState({ panes, activeKey });
     }
 
@@ -203,7 +201,6 @@ export default class Init extends Component {
 
 
     render() {
-        console.log("32412348723489");
         if (SC.loginFlag) {
             // 渲染首页
             return this.renderIndex();

@@ -6,10 +6,21 @@ html,body
 #container
     min-height: 100%;
 
-// 修改antd的Tabs样式--start
+// 修改antd的Tabs样式
 .ant-tabs-bar
     margin: 0;
-// 修改antd的Tabs样式--end
+// 修改cascader联动组件的滚动条
+.ant-cascader-menu
+    -webkit-overflow-scrolling:touch;
+    -webkit-transition: background .3s,width .2s;
+    transition: background .3s,width .2s;
+    &::-webkit-scrollbar
+        width:7px;
+    &::-webkit-scrollbar-thumb
+        background:rgba(153,153,153,0.5);
+        border-radius:5px;
+    &::-webkit-scrollbar-track
+        background:#ddd;
 
 .mb25
     margin-bottom: 25px;

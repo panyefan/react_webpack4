@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Row, Col } from 'antd';
+import Utils from '../../utils/Utils'
 import { Upload, Button, Icon, message } from 'antd';
 
 import './UploadFile.styl';
@@ -29,7 +29,7 @@ export default class UploadFile extends React.Component {
     }
 
     componentDidMount() {
-        
+
     }
 
     // 上传文件之前的钩子函数
@@ -37,7 +37,7 @@ export default class UploadFile extends React.Component {
         if (this.fileCheck(file) == false) {
             return false;
         }
-        
+
         let name = file.name;
         let size = file.size;
         let type = name.substring(name.lastIndexOf('.') + 1);
@@ -61,10 +61,10 @@ export default class UploadFile extends React.Component {
     fileCheck = (file) => {
         let name = file.name;
         let size = file.size;
-        let type = name.substring(name.lastIndexOf('.') + 1);
+        let type = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
 
 
-        let regEn = /[`~!@#$%^&*()_+<>?:"{},\/;'[\]]/im;
+        let regEn = /[`~!@#$%^&*()+<>?:"{},\/;'[\]]/im;
         let regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
         if (regEn.test(name) || regCn.test(name)) {
             message.error('上传文件的名称不能含有特殊字符');
@@ -131,10 +131,10 @@ export default class UploadFile extends React.Component {
             <div className={`upload_wrap ${cls}`} {...others}>
                 <Upload {...uploadProps}>
                     <div className="upload_wrap">
-                        <i className="myexcle_img"></i>
+                        <i className={`myexcle_img ${isSelectedFile ? '' : 'myexcle_img_opacity'}`}></i>
                     </div>
                     <div className="upload_wrap">
-                        <span style={{ margin: '10px 0' }}>{fileName}</span>
+                        <span className="file_name">{fileName}</span>
                     </div>
                     <div className="upload_wrap">
                         <Button>
