@@ -7,6 +7,9 @@ import { Icon, Input, Button, Checkbox } from 'antd';
 
 import './Register.styl';
 
+/**
+ * 注册组件
+ */
 export default class Register extends React.Component {
     static propTypes = {
     };

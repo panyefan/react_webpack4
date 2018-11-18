@@ -1,5 +1,4 @@
 import React from 'react';
-import Marquee from '../../components/Marquee/index'
 import { inject } from 'mobx-react';
 import './Dices.styl';
 
@@ -31,7 +30,7 @@ export default class Dices extends React.Component {
     render() {
         return (
             <div className="dices_wrapper">
-                <Marquee/>
+                测试mobx
             </div>
         )
     }

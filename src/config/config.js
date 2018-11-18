@@ -23,11 +23,17 @@ global.initHoldPages = () => {
 // 表单校验
 global.formCheck = (name, handle) => {
     if (name) {
-        return handle[name]();
+        let temp = handle[name]();
+        // 释放掉闭包内存。如果你经常使用闭包后忘记置为nul，建议你少用闭包为好
+        handle[name] = null;
+        return temp;
     } else {
         let temp = [];
         Object.keys(handle).map((item) => {
-            temp.push(handle[item]());
+            let falg = handle[item]();
+            // 释放掉闭包内存。如果你经常使用闭包后忘记置为nul，建议你少用闭包为好
+            handle[item] = null;
+            temp.push(falg);
         });
         return !temp.includes(false);
     }

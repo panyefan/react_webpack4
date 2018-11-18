@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Menu, Icon, Tabs } from 'antd';
 import { Login, Register, ForgetPassword } from '../components/LoginRegister/index';
 import PropTypes from 'prop-types';
+import Utils from '../utils/Utils';
 import './init.styl';
 
 export default class Init extends Component {
@@ -176,29 +177,24 @@ export default class Init extends Component {
     // 切换到忘记密码组件
     onForgetPassword = () => {
         let toggleArr = this.state.toggleArr;
-        toggleArr = this.setArrEleTrue(toggleArr);
+        toggleArr = Utils.setArrEleFalse(toggleArr);
         toggleArr[1] = true;
         this.setState({toggleArr});
     }
     // 切换到注册组件
     onRegister = () => {
         let toggleArr = this.state.toggleArr;
-        toggleArr = this.setArrEleTrue(toggleArr);
+        toggleArr = Utils.setArrEleFalse(toggleArr);
         toggleArr[2] = true;
         this.setState({toggleArr});
     }
     // 切换到登录组件
     onLogin = () => {
         let toggleArr = this.state.toggleArr;
-        toggleArr = this.setArrEleTrue(toggleArr);
+        toggleArr = Utils.setArrEleFalse(toggleArr);
         toggleArr[0] = true;
         this.setState({toggleArr});
     }
-    // 将数组元素全部设置为true
-    setArrEleTrue = (arr) => {
-        return arr && arr.map(() => { return false });
-    }
-
 
     render() {
         if (SC.loginFlag) {

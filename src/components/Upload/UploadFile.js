@@ -6,6 +6,9 @@ import { Upload, Button, Icon, message } from 'antd';
 
 import './UploadFile.styl';
 
+/**
+ * 上传文件组件
+ */
 export default class UploadFile extends React.Component {
     static propTypes = {
         uploadKey: PropTypes.string,

@@ -7,6 +7,9 @@ import { Icon, Input, Button, Checkbox } from 'antd';
 
 import './Login.styl';
 
+/**
+ * 登录组件
+ */
 export default class Login extends React.Component {
     static propTypes = {
     };

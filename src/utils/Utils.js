@@ -29,6 +29,13 @@ export default class Utils {
     }
 
     /**
+     * 将数组元素全部设置为false
+     */
+    static setArrEleFalse (arr) {
+        return arr && arr.map(() => { return false });
+    }
+
+    /**
      * num传入的数字，n需要的字符长度
      * 传入6，需要的字符长度为3，结果为：006
      */

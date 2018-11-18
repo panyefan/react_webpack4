@@ -7,6 +7,9 @@ import { Icon, Input, Button, Checkbox } from 'antd';
 
 import './ForgetPassword.styl';
 
+/**
+ * 忘记密码组件
+ */
 export default class ForgetPassword extends React.Component {
     static propTypes = {
     };
