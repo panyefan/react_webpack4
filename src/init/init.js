@@ -51,12 +51,13 @@ export default class Init extends Component {
         }
     }
 
-    // Tabs
+    // Tabs之前的切换
     onChange = (activeKey) => {
         let curHref = activeKey;
         let preLink = window.location.href.split('#/')[1].split('?');
         let preHref = preLink[0];
         let preQuery = preLink[1] || '';
+        // 保留URL后面的参数
         sessionStorage.setItem(preHref, preQuery);
         let curQuery = sessionStorage.getItem(curHref) || '';
         this.context.router.push(activeKey + '?' + curQuery);
@@ -109,9 +110,9 @@ export default class Init extends Component {
         if (path.startsWith('/') && path.length > 1) {
             path = path.substr(1);
         }
-        // if(path == "index") {
-        //     path = '/';
-        // }
+        if(path == "index") {
+            path = '/';
+        }
         const index = values.indexOf(path);
         const tabTitle = this.tabTitleMap.get(path);
         const newtabs = {
@@ -168,9 +169,10 @@ export default class Init extends Component {
         this.setState({ panes, activeKey });
     }
 
-    // menus
+    // 菜单点击
     menuClick = (obj) => {
         console.log(obj);
+        // 路由到子页面
         obj.item.props.url && (location.href = obj.item.props.url);
     }
 
@@ -221,7 +223,7 @@ export default class Init extends Component {
                     </div>
                     <div className="sider-menu-wrap">
                         <Menu theme="dark" mode="inline" onClick={this.menuClick} defaultSelectedKeys={['1']}>
-                            <Menu.Item key="2" url="#/index">
+                            <Menu.Item key="2" url="#/">
                                 <Icon type="video-camera" />
                                 <span>企业信息</span>
                             </Menu.Item>
@@ -259,15 +261,6 @@ export default class Init extends Component {
                                 type="editable-card"
                                 onEdit={this.onEdit}
                             >
-                                {/* {this.state.panes.map(pane => {
-                                    <TabPane tab={pane.title} key={pane.key}>
-                                        <Content style={{ margin: '0 16px' }}>
-                                            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-                                                {pane.content}
-                                            </div>
-                                        </Content>
-                                    </TabPane>
-                                })} */}
                                 {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key}><Content style={{ background:'#F0F2F5',padding: '16px' }}><div style={{ padding: 24, background: '#fff', minHeight: 360 }}>{pane.content}</div></Content></TabPane>)}
                             </Tabs>
                         </div>
