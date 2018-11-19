@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon, Tabs } from 'antd';
 import PropTypes from 'prop-types';
+import routeMenus from './routeMenus.js';
+import { TestMenus } from '../utils/TestMenus';
 import './init.styl';
 
 export default class Init extends Component {
@@ -8,6 +10,7 @@ export default class Init extends Component {
         super(props, context);
         this.curTabKey = ''; // 当前激活的是哪个tab
         this.state = {
+            menus:[],
             activeKey: '',
             panes: [],
             acurrentTabKey: '',  // 当前激活的是哪个tab
@@ -28,12 +31,14 @@ export default class Init extends Component {
     }
 
     componentDidMount() {
+        this.setState({
+            menus: TestMenus        // 左侧菜单栏数组
+        });
         this.updateTab(this.props);
     }
 
     componentWillMount() {
-        // this.tabTitleMap = this.parseTabTitle(this.state.menus);
-        this.tabTitleMap = this.parseTabTitle([{ 'funcId': 1, 'funcName': 'Dices', 'funcUrl': 'Dices' }]);
+        this.tabTitleMap = this.parseTabTitle(TestMenus);
         this.updateTab(this.props);
     }
 
@@ -76,26 +81,29 @@ export default class Init extends Component {
         return values;
     }
 
-    //解析menu，生成叶子节点对应的key和名称
+    // 生成页面的路由和名称的映射
     parseTabTitle = (menus) => {
         const tabTitleMap = new Map();
         const tabFuncIdMap = new Map();
-        // menus.forEach((menu) => {
-        //     menu.subs.forEach((item) => {
-        //         tabTitleMap.set(item.funcUrl.substr(1),item.funcName);
-        //         tabFuncIdMap.set(item.funcUrl.substr(1),item.funcId);
-        //     })
-        // });
-        menus.forEach((item) => {
-            tabTitleMap.set(item.funcUrl, item.funcName);
-            tabFuncIdMap.set(item.funcUrl, item.funcId);
+        menus.forEach((menu) => { // 第一级菜单
+            tabTitleMap.set(menu.funcUrl.substr(1),menu.funcName);
+            tabFuncIdMap.set(menu.funcUrl.substr(1),menu.funcId);
+            menu.subs && menu.subs.forEach((item) => { // 第二级菜单
+                tabTitleMap.set(item.funcUrl.substr(1),item.funcName);
+                tabFuncIdMap.set(item.funcUrl.substr(1),item.funcId);
+                item.subs && item.subs.forEach((subsItem) => { // 第三级菜单
+                    tabTitleMap.set(subsItem.funcUrl.substr(1),subsItem.funcName);
+                    tabFuncIdMap.set(subsItem.funcUrl.substr(1),subsItem.funcId);
+                })
+            })
         });
 
         this.tabFuncIdMap = tabFuncIdMap;
 
-        // routeMenus.forEach((item) => {
-        //     tabTitleMap.set(item.funcUrl, item.funcName)
-        // });
+        // 其他页面的路由和名称映射
+        routeMenus.forEach((item) => {
+            tabTitleMap.set(item.funcUrl, item.funcName)
+        });
 
         return tabTitleMap;
     }
@@ -126,7 +134,7 @@ export default class Init extends Component {
                 selectedKeys: [selectedKeys]
             })
 
-            sessionStorage.setItem('NavDefaultSelectedKeys', selectedKeys || '');
+            // sessionStorage.setItem('NavDefaultSelectedKeys', selectedKeys || '');
 
             this.curTabKey = activeTabkey;
         } else {
@@ -201,30 +209,26 @@ export default class Init extends Component {
                     </div>
                     <div className="sider-menu-wrap">
                         <Menu theme="dark" mode="inline" onClick={this.menuClick} defaultSelectedKeys={['1']}>
-                            {/* <SubMenu key="sub1" title={<span><Icon type="mail" /><span>Navigation One</span></span>}>
-                                <MenuItemGroup key="g1" title="Item 1">
-                                    <Menu.Item key="1">Option 1</Menu.Item>
-                                    <Menu.Item key="2">Option 2</Menu.Item>
-                                </MenuItemGroup>
-                                <MenuItemGroup key="g2" title="Item 2">
-                                    <Menu.Item key="3">Option 3</Menu.Item>
-                                    <Menu.Item key="4">Option 4</Menu.Item>
-                                </MenuItemGroup>
-                            </SubMenu>
-                            <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}>
-                                <Menu.Item key="5">Option 5</Menu.Item>
-                                <Menu.Item key="6">Option 6</Menu.Item>
-                                <SubMenu key="sub3" title="Submenu">
-                                    <Menu.Item key="7">Option 7</Menu.Item>
-                                    <Menu.Item key="8">Option 8</Menu.Item>
-                                </SubMenu>
-                            </SubMenu>
-                            <SubMenu key="sub3" title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}></SubMenu>
-                            <Menu.Item key="3">
-                                <Icon type="upload" />
-                                <span>资金预存</span>
-                            </Menu.Item> */}
-                            <Menu.Item key="2" url="#/">
+                            {   this.state.menus.map((menu, index) => {
+                                    if(menu.isSingle){
+                                        return <Menu.Item key={`menu${menu.funcId}`} url={`#${menu.funcUrl}`}>
+                                            <Icon type="upload" />
+                                            <span>{menu.funcName}</span>
+                                        </Menu.Item>
+                                    }else{
+                                        return <SubMenu key={`menu${menu.funcId}`} title={<span><Icon type="mail" /><span>{menu.funcName}</span></span>}>
+                                            {menu.subs.map((sub, subIndex) => {
+                                                return <Menu.Item key={`menu${sub.funcId}`} url={`#${sub.funcUrl}`}>
+                                                    <Icon type="upload" />
+                                                    <span>{sub.funcName}</span>
+                                                </Menu.Item>;
+                                            })}
+                                        </SubMenu>
+                                    }
+                                })
+                            }
+                            
+                            {/* <Menu.Item key="2" url="#/">
                                 <Icon type="video-camera" />
                                 <span>企业信息</span>
                             </Menu.Item>
@@ -247,7 +251,7 @@ export default class Init extends Component {
                             <Menu.Item key="7">
                                 <Icon type="upload" />
                                 <span>订单流水</span>
-                            </Menu.Item>
+                            </Menu.Item> */}
                         </Menu>
                     </div>
                 </Sider>
