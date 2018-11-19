@@ -1,10 +1,10 @@
 import React from 'react';
 import { inject } from 'mobx-react';
-import './Dices.styl';
+import './testMobx.styl';
 
 // 引用mobx里面的变量和方法
 @inject('providerListStore')
-export default class Dices extends React.Component {
+export default class TestMobx extends React.Component {
     static defaultProps = {
     };
     static propTypes = {

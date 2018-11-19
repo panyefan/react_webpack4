@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Row, Col } from 'antd';
-import { Upload, Button, Icon, message } from 'antd';
+import { Upload, Icon, message } from 'antd';
 
 import './UploadPic.styl';
 

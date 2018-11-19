@@ -5,7 +5,7 @@ import Utils from '../utils/Utils';
 // 初始化一个全局变量对象
 global.SC = {
     baseUrl: '',
-    loginFlag: true,
+    loginFlag: false,
     loginUrl: '#/login',
     indexUrl: '#/index',
     // indexUrl: '#/userManage',

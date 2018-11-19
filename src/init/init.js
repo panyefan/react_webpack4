@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon, Tabs } from 'antd';
-import { Login, Register, ForgetPassword } from '../components/LoginRegister/index';
 import PropTypes from 'prop-types';
-import Utils from '../utils/Utils';
 import './init.styl';
 
 export default class Init extends Component {
@@ -10,7 +8,6 @@ export default class Init extends Component {
         super(props, context);
         this.curTabKey = ''; // 当前激活的是哪个tab
         this.state = {
-            toggleArr: [true, false, false], // 触发登录，注册、忘记密码组件的切换显示
             activeKey: '',
             panes: [],
             acurrentTabKey: '',  // 当前激活的是哪个tab
@@ -176,28 +173,6 @@ export default class Init extends Component {
         obj.item.props.url && (location.href = obj.item.props.url);
     }
 
-    // 切换到忘记密码组件
-    onForgetPassword = () => {
-        let toggleArr = this.state.toggleArr;
-        toggleArr = Utils.setArrEleFalse(toggleArr);
-        toggleArr[1] = true;
-        this.setState({toggleArr});
-    }
-    // 切换到注册组件
-    onRegister = () => {
-        let toggleArr = this.state.toggleArr;
-        toggleArr = Utils.setArrEleFalse(toggleArr);
-        toggleArr[2] = true;
-        this.setState({toggleArr});
-    }
-    // 切换到登录组件
-    onLogin = () => {
-        let toggleArr = this.state.toggleArr;
-        toggleArr = Utils.setArrEleFalse(toggleArr);
-        toggleArr[0] = true;
-        this.setState({toggleArr});
-    }
-
     render() {
         if (SC.loginFlag) {
             // 渲染首页
@@ -211,6 +186,9 @@ export default class Init extends Component {
     renderIndex = () => {
         const { Header, Sider, Content } = Layout;
         const TabPane = Tabs.TabPane;
+        const SubMenu = Menu.SubMenu;
+        const MenuItemGroup = Menu.ItemGroup;
+
         return (
             <Layout>
                 <Sider
@@ -223,6 +201,29 @@ export default class Init extends Component {
                     </div>
                     <div className="sider-menu-wrap">
                         <Menu theme="dark" mode="inline" onClick={this.menuClick} defaultSelectedKeys={['1']}>
+                            {/* <SubMenu key="sub1" title={<span><Icon type="mail" /><span>Navigation One</span></span>}>
+                                <MenuItemGroup key="g1" title="Item 1">
+                                    <Menu.Item key="1">Option 1</Menu.Item>
+                                    <Menu.Item key="2">Option 2</Menu.Item>
+                                </MenuItemGroup>
+                                <MenuItemGroup key="g2" title="Item 2">
+                                    <Menu.Item key="3">Option 3</Menu.Item>
+                                    <Menu.Item key="4">Option 4</Menu.Item>
+                                </MenuItemGroup>
+                            </SubMenu>
+                            <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}>
+                                <Menu.Item key="5">Option 5</Menu.Item>
+                                <Menu.Item key="6">Option 6</Menu.Item>
+                                <SubMenu key="sub3" title="Submenu">
+                                    <Menu.Item key="7">Option 7</Menu.Item>
+                                    <Menu.Item key="8">Option 8</Menu.Item>
+                                </SubMenu>
+                            </SubMenu>
+                            <SubMenu key="sub3" title={<span><Icon type="appstore" /><span>Navigation Two</span></span>}></SubMenu>
+                            <Menu.Item key="3">
+                                <Icon type="upload" />
+                                <span>资金预存</span>
+                            </Menu.Item> */}
                             <Menu.Item key="2" url="#/">
                                 <Icon type="video-camera" />
                                 <span>企业信息</span>
@@ -271,15 +272,14 @@ export default class Init extends Component {
     }
 
     renderLogin = () => {
-        const { toggleArr } = this.state;
+        const { ...others } = this.props;
         return (
-            <div className="login_wrap">
-                <div className="login_wrap_left">
-                    {toggleArr[0] && <Login className="fadeIn" onForgetPassword={this.onForgetPassword} onRegister={this.onRegister} />}
-                    {toggleArr[1] && <Register className="fadeIn" onLogin={this.onLogin}/>}
-                    {toggleArr[2] && <ForgetPassword className="fadeIn" onLogin={this.onLogin}/>}
+            <div {...others}>
+                <div style={{ display: (this.props.location.pathname).charAt(this.props.location.pathname.length - 1) == '/' ? 'none' : 'block' }}>
+                    <div key={this.props.location.pathname}>
+                        {this.props.children}
+                    </div>
                 </div>
-                <div className="login_wrap_right"></div>
             </div>
         )
     }

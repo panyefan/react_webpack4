@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import Utils from '../../utils/Utils'
-import { Upload, Button, Icon, message } from 'antd';
+import { Upload, Button, message } from 'antd';
 
 import './UploadFile.styl';
 

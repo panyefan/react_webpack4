@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Regexp } from '../../utils/Regexp'
 import { Row, Col } from 'antd';
-import { Icon, Input, Button, Checkbox } from 'antd';
+import { Input, Button } from 'antd';
 
 import './Login.styl';
 
@@ -79,6 +79,9 @@ export default class Login extends React.Component {
         if (!this.check()) {
             return;
         }
+
+        SC.loginFlag = true;
+        location.href = SC.indexUrl;
 
         console.log("登录");
     }

@@ -232,7 +232,7 @@ export default class CompanyAddEdit extends React.Component {
                             <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col className="tr" span={3}>行业类别</Col>
                                 <Col span={12}>
-                                    {/* <Cascader className="width350" placeholder="选择行业类别" options={CityData} expandTrigger="hover" onChange={this.onCityChange} /> */}
+                                    <Cascader className="width350" placeholder="选择行业类别" options={IndustryTypeData} expandTrigger="hover" onChange={this.onCityChange} />
                                     <div className="error_info">{search.userNameErr}</div>
                                 </Col>
                             </Row>

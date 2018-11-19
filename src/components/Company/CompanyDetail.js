@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Regexp } from '../../utils/Regexp'
 import { Hoverable } from '../Hoverable/index'
 import { Row, Col } from 'antd';
-import { Badge, Input, Button, Card } from 'antd';
+import { Badge, Button, Card } from 'antd';
 
 import './CompanyDetail.styl';
 

@@ -7,12 +7,26 @@ const router = {
     },
     indexRoute: {
         getComponent(nextState, callback) {
-            require.ensure([], require => {
-                callback(null, require('../pages/index/index'));
-            }, 'index');
+            if (SC.loginFlag) {
+                require.ensure([], require => {
+                    callback(null, require('../pages/index/index'));
+                }, 'index');
+            } else {
+                require.ensure([], require => {
+                    callback(null, require('../pages/loginPage/loginPage'));
+                }, 'login');
+            }
         }
     },
     childRoutes: [
+        {
+            path: 'login',        //登录
+            getComponent(nextState, callback) {
+                require.ensure([], require => {
+                    callback(null, require('../pages/loginPage/loginPage'));
+                }, 'login');
+            }
+        },
         {
             path: 'index',        //首页
             getComponent(nextState, callback) {

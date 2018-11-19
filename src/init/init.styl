@@ -16,7 +16,7 @@
     position: fixed;
     height: 100%;
     left: 0;
-    z-index: 999;
+    z-index: 99;
     box-shadow: 2px 0 6px 0 rgba(0,21,41,0.35);
 
 .ant-layout-sider-children
@@ -33,7 +33,11 @@
             background: url('../images/logo.png') no-repeat;
             background-size: 100% 100%; 
     .sider-menu-wrap
-        height: 100%;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        bottom: 0;
         overflow:auto;
         -webkit-overflow-scrolling:touch;
         -webkit-transition: background .3s,width .2s;
@@ -76,30 +80,6 @@
         
 .min_width
     min-width: 1250px;
-    
-
-// 登录
-.login_wrap
-    display: flex;
-    min-width: 1250px;
-    height: 100vh;
-    .login_wrap_left
-        flex: 0 0 526px;
-        padding-top: 100px;
-        padding-left: 100px;
-    .login_wrap_right
-        flex: 1;
-        background: url('../images/banner01.png') no-repeat;
-        background-size: 100% 100%; 
-
-.fadeIn
-    -webkit-animation:myfadeIn 1s .2s ease both;
-
-@keyframes myfadeIn
-    0%
-        opacity:0;
-    100%
-        opacity:1;
 
 .ant-tabs-bar
     margin: 0
