@@ -3,7 +3,7 @@ import { Layout, Menu, Icon, Tabs } from 'antd';
 import PropTypes from 'prop-types';
 import routeMenus from './routeMenus.js';
 import { TestMenus } from '../utils/TestMenus';
-import './init.styl';
+import './init.less';
 
 export default class Init extends Component {
     constructor(props, context) {

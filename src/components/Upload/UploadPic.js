@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Upload, Icon, message } from 'antd';
 
-import './UploadPic.styl';
+import './UploadPic.less';
 
 /**
  * 上传图片组件

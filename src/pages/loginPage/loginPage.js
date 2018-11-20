@@ -1,7 +1,7 @@
 import React from 'react';
 import { Login, Register, ForgetPassword } from '../../components/LoginRegister/index';
 
-import './loginPage.styl';
+import './loginPage.less';
 
 export default class LoginPage extends React.Component {
     static defaultProps = {

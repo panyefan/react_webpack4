@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject } from 'mobx-react';
-import './testMobx.styl';
+import './testMobx.less';
 
 // 引用mobx里面的变量和方法
 @inject('providerListStore')

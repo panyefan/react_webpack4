@@ -5,7 +5,7 @@ import { Regexp } from '../../utils/Regexp'
 import { Row, Col } from 'antd';
 import { Input, Button } from 'antd';
 
-import './ForgetPassword.styl';
+import './ForgetPassword.less';
 
 /**
  * 忘记密码组件

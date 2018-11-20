@@ -5,7 +5,7 @@ import { Regexp } from '../../utils/Regexp'
 import { Row, Col } from 'antd';
 import { Input, Button } from 'antd';
 
-import './Login.styl';
+import './Login.less';
 
 /**
  * 登录组件

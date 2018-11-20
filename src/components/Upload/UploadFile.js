@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Upload, Button, message } from 'antd';
 
-import './UploadFile.styl';
+import './UploadFile.less';
 
 /**
  * 上传文件组件

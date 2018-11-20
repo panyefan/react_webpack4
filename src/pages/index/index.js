@@ -1,7 +1,7 @@
 import React from 'react';
 import { CompanyDetail, CompanyAddEdit } from '../../components/Company/index';
 
-import './index.styl';
+import './index.less';
 
 export default class Index extends React.Component {
     static defaultProps = {

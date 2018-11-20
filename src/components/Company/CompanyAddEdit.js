@@ -8,7 +8,7 @@ import { UploadPic } from '../../components/Upload/index';
 import Utils from '../../utils/Utils';
 import { Row, Col, Divider, Input, Button, Checkbox, Steps, Icon, Cascader } from 'antd';
 
-import './CompanyAddEdit.styl';
+import './CompanyAddEdit.less';
 
 /**
  * 添加或者编辑公司信息组件

@@ -43,6 +43,14 @@ const router = {
                 }, 'userManage');
             }
         },
+        {
+            path: 'issueWelfare',    //发放福利
+            getComponent(nextState, callback) {
+                require.ensure([], require => {
+                    callback(null, require('../pages/issueWelfare/issueWelfare'));
+                }, 'issueWelfare');
+            }
+        },
     ]
 }
 

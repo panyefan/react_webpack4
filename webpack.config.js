@@ -90,14 +90,11 @@ var config = {
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
-                        loader: 'css-loader', options: {
-                            sourceMap: true
-                        }
+                        loader: 'css-loader'
                     },
                     {
                         loader: 'postcss-loader',
                         options: {
-                            sourceMap: true,
                             config: {
                                 path: 'postcss.config.js'
                             }
@@ -106,28 +103,24 @@ var config = {
                 ]
             },
             {
-                test: /\.styl$/,
+                test: /\.less$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
-                        loader: 'css-loader', options: {
-                            sourceMap: true
-                        }
+                        loader: 'css-loader'
                     },
                     {
                         loader: 'postcss-loader',
                         options: {
-                            sourceMap: true,
                             config: {
                                 path: 'postcss.config.js'
                             }
                         }
                     },
                     {
-                        loader: 'stylus-loader', options: { sourceMap: true }
+                        loader: 'less-loader'
                     },
                 ],
-                exclude: /node_modules/
             },
             {
                 test: /\.(png|jpg|woff|eot|ttf|svg)$/,

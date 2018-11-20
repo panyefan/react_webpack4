@@ -60,34 +60,14 @@ export const TestMenus = [{
 	"appId": 2,
 	"funcCode": "EQUIPMENT-MENU",
 	"funcName": "发放福利",
-	"funcUrl": "",
+	"funcUrl": "/issueWelfare",
 	"parentFunc": 0,
 	"ordered": 99700,
 	"menuFlag": true,
 	"remark": "发放福利",
 	"permissions": [],
-	"subs": [{
-		"funcId": 419,
-		"appId": 2,
-		"funcCode": "MERCHANT-DEVICE-LIST",
-		"funcName": "设备列表",
-		"funcUrl": "/merchant-device-list",
-		"parentFunc": 418,
-		"ordered": 99929,
-		"menuFlag": true,
-		"remark": "汇收款",
-		"permissions": [{
-			"funcId": 419,
-			"permissionCode": "QUERY",
-			"permissionName": "查询"
-		},
-		{
-			"funcId": 419,
-			"permissionCode": "UNBIND",
-			"permissionName": "解绑"
-		}]
-	}],
-	"isSingle": false
+	"subs": [],
+	"isSingle": true
 },
 {
 	"funcId": 22,

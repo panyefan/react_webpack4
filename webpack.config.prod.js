@@ -99,7 +99,7 @@ var config = {
                 ]
             },
             {
-                test: /\.styl$/,
+                test: /\.less$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
@@ -114,10 +114,9 @@ var config = {
                         }
                     },
                     {
-                        loader: 'stylus-loader'
+                        loader: 'less-loader'
                     },
                 ],
-                exclude: /node_modules/
             },
             {
                 test: /\.(png|jpg|woff|eot|ttf|svg)$/,

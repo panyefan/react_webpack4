@@ -2,9 +2,9 @@ import React from 'react';
 import { Row, Col, Divider, Input, Button, Icon, Table, Dropdown, Menu, Badge, Modal, message } from 'antd';
 import Utils from '../../utils/Utils';
 import { UploadFile } from '../../components/Upload/index';
-import './userManage.less';
+import './issueWelfare.less';
 
-export default class userManage extends React.Component {
+export default class IssueWelfare extends React.Component {
     static defaultProps = {
     };
     static propTypes = {
@@ -15,35 +15,34 @@ export default class userManage extends React.Component {
         this.currentPage = -1;
         this.sizeArr = ['5', '15', '30', '50', '100'];
         this.thData = [
-            { title: '姓名', dataIndex: 'createTime1', key: 'createTime1' },
-            { title: '手机号码', dataIndex: 'createTime2', key: 'createTime2' },
-            { title: '部门', dataIndex: 'createTime3', key: 'createTime3' },
-            { title: '职位', dataIndex: 'createTime4', key: "createTime4" },
-            { title: '职级', dataIndex: 'createTime5', key: 'createTime5' },
-            { title: '身份证后6位', dataIndex: 'createTime6', key: 'createTime6' },
-            { title: '添加时间', dataIndex: 'createTime7', key: 'createTime7' },
+            { title: '发放批次', dataIndex: 'createTime1', key: 'createTime1' },
+            { title: '发放主题', dataIndex: 'createTime2', key: 'createTime2' },
+            { title: '发放时间', dataIndex: 'createTime3', key: 'createTime3' },
+            { title: '实发金额', dataIndex: 'createTime4', key: "createTime4" },
+            { title: '已领金额', dataIndex: 'createTime5', key: 'createTime5' },
+            { title: '未领金额', dataIndex: 'createTime6', key: 'createTime6' },
             {
-                title: '发放状态', dataIndex: 'createTime8', key: 'createTime8', render: (text, item) => {
+                title: '发放状态', dataIndex: 'createTime7', key: 'createTime7', render: (text, item) => {
                     return (
-                        <Badge status="warning" text="未领" />
+                        <Badge status="warning" text="未激活" />
                     )
                 }
             },
-            {
-                title: '员工状态', dataIndex: 'createTime9', key: 'createTime9', render: (text, item) => {
-                    return (
-                        <Badge status="processing" text="离职" />
-                    )
-                }
-            },
+            { title: '已领卡数', dataIndex: 'createTime8', key: 'createTime8' },
             {
                 title: '操作', key: 'operation', width: 104, render: (text, item) => {
                     const menu = <Menu>
                         <Menu.Item>
-                            <a href="#/index">修改</a>
+                            <a href="#/index">激活</a>
                         </Menu.Item>
                         <Menu.Item>
-                            <a href="#/index">离职</a>
+                            <a href="#/index">详情</a>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <a href="#/index">链接</a>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <a href="#/index">撤销</a>
                         </Menu.Item>
                     </Menu>;
                     return (
@@ -66,7 +65,6 @@ export default class userManage extends React.Component {
                 'createTime6': '1234',
                 'createTime7': '1234',
                 'createTime8': '1234',
-                'createTime9': '1234',
             }],
             totalRecords: 0, // 总记录数
             showLoading: false, // 表格是否显示load
@@ -145,65 +143,29 @@ export default class userManage extends React.Component {
         return (
             <div className="user_manage_wrap">
                 <div className="user_manage_head">
-                    <span>在职员工总数：<span className="num">888</span>人</span>
-                    <Button className="ml30" type="primary" icon="poweroff" onClick={() => this.setState({ addEmpVisible: true })}>添加员工</Button>
-                    <Button className="ml30" type="primary" icon="poweroff" onClick={() => { this.setState({ batchAddVisible: true }) }}>批量新增</Button>
-                    <Button className="ml30" type="primary" icon="poweroff" onClick={()=>this.setState({batchUpdateVisible: true})}>批量修改</Button>
+                    <span>可用余额：<span className="num">100,000</span>元</span>
+                    <Button className="ml30" type="primary" icon="poweroff" onClick={() => this.setState({ addEmpVisible: true })}>发放福利</Button>
+                    <Button className="ml30" type="primary" icon="poweroff" onClick={() => { this.setState({ batchAddVisible: true }) }}>卡面配置</Button>
+                    <Button className="ml30" type="primary" icon="poweroff" onClick={()=>this.setState({batchUpdateVisible: true})}>卡管理</Button>
                     <Divider></Divider>
                 </div>
                 <div className="query_flex">
                     <div className="query_flex_item">
-                        <div className="label">姓名</div>
+                        <div className="label">发放主题</div>
                         <div className="control">
                             <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
                         </div>
                     </div>
                     <div className="query_flex_item">
-                        <div className="label">手机号码</div>
+                        <div className="label">发放时间</div>
                         <div className="control">
                             <Input className="width224" maxLength="30" name="userName1" onChange={this.handleChange} />
                         </div>
                     </div>
                     <div className="query_flex_item">
-                        <div className="label">部门</div>
-                        <div className="control">
-                            <Input className="width224" maxLength="30" name="userName2" onChange={this.handleChange} />
-                        </div>
-                    </div>
-                    <div className="query_flex_item">
-                        <div className="label">职位</div>
-                        <div className="control">
-                            <Input className="width224" maxLength="30" name="userName3" onChange={this.handleChange} />
-                        </div>
-                    </div>
-                    <div className="query_flex_item">
-                        <div className="label">职级</div>
-                        <div className="control">
-                            <Input className="width224" maxLength="30" name="userName4" onChange={this.handleChange} />
-                        </div>
-                    </div>
-                    <div className="query_flex_item">
-                        <div className="label">身份证号码</div>
-                        <div className="control">
-                            <Input className="width224" maxLength="30" name="userName5" onChange={this.handleChange} />
-                        </div>
-                    </div>
-                    <div className="query_flex_item">
-                        <div className="label">添加时间</div>
-                        <div className="control">
-                            <Input className="width224" maxLength="30" name="userName6" onChange={this.handleChange} />
-                        </div>
-                    </div>
-                    <div className="query_flex_item">
                         <div className="label">发放状态</div>
                         <div className="control">
-                            <Input className="width224" maxLength="30" name="userName7" onChange={this.handleChange} />
-                        </div>
-                    </div>
-                    <div className="query_flex_item">
-                        <div className="label">卡状态</div>
-                        <div className="control">
-                            <Input className="width224" maxLength="30" name="userName8" onChange={this.handleChange} />
+                            <Input className="width224" maxLength="30" name="userName2" onChange={this.handleChange} />
                         </div>
                     </div>
                 </div>

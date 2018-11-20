@@ -6,7 +6,7 @@ import { Hoverable } from '../Hoverable/index'
 import { Row, Col } from 'antd';
 import { Badge, Button, Card } from 'antd';
 
-import './CompanyDetail.styl';
+import './CompanyDetail.less';
 
 /**
  * 展示公司信息组件

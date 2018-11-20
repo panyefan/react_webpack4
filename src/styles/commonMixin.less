@@ -1,66 +1,90 @@
 /* set css */
-html,body
+html,body{
     width: 100vw;
     height: 100vh;
+}
     
-#container
+#container{
     min-height: 100%;
+}
 
 // 修改antd的Tabs样式
-.ant-tabs-bar
+.ant-tabs-bar{
     margin: 0;
+}
 // 修改cascader联动组件的滚动条
-.ant-cascader-menu
+.ant-cascader-menu{
     -webkit-overflow-scrolling:touch;
     -webkit-transition: background .3s,width .2s;
     transition: background .3s,width .2s;
-    &::-webkit-scrollbar
+    &::-webkit-scrollbar{
         width:7px;
-    &::-webkit-scrollbar-thumb
+    }
+    &::-webkit-scrollbar-thumb{
         background:rgba(153,153,153,0.5);
         border-radius:5px;
-    &::-webkit-scrollbar-track
+    }
+    &::-webkit-scrollbar-track{
         background:#ddd;
+    }
+}
+.ant-dropdown-menu-item > a{
+    color: #1890ff !important;
+}
 
-.mb25
+.mb25{
     margin-bottom: 25px;
-.error_info
+}
+.error_info{
     position: absolute;
     color: #f5222d;
-.tl
+}
+.tl{
     text-align: left;
-.tr
+}
+.tr{
     text-align: right;
-.tc
+}
+.tc{
     text-align: center;
+}
 // 水平居中
-.xc
+.xc{
     display: flex;
     justify-content: center;
+}
 // 垂直居中
-.yc
+.yc{
     display: flex;
     align-items: center;
+}
 // 水平垂直居中
-.xyc
+.xyc{
     display: flex;
     justify-content: center;
     align-items: center;
-.query_flex
+}
+.query_flex{
     display: flex;
     flex-wrap: wrap; 
-    .query_flex_item
+    .query_flex_item{
         display: flex;
         width: 350px;
         margin: 10px 0;
-        .label
+        .label{
             flex: 0 0 125px;
             text-align: right;
             padding-right: 25px;
             line-height: 32px;
-        .control
+        }
+        .control{
             flex: 1;
-.width224
+        }
+    }
+}
+.width224{
     width: 224px;
-.query_btn_wrap
+}
+.query_btn_wrap{
     margin-bottom: 20px;
+}

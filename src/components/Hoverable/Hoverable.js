@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import './Hoverable.styl';
+import './Hoverable.less';
 
 /**
  * 为组件添加阴影效果
