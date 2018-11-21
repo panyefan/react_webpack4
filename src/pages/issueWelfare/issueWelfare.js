@@ -1,9 +1,10 @@
 import React from 'react';
-import { Row, Col, Divider, Input, Button, Icon, Table, Dropdown, Menu, Badge, Modal, message } from 'antd';
+import { Row, Col, Divider, Input, Button, Icon, Dropdown, Modal, message, Steps } from 'antd';
 import Utils from '../../utils/Utils';
 import { UploadFile } from '../../components/Upload/index';
 import './issueWelfare.less';
 
+const confirm = Modal.confirm;
 export default class IssueWelfare extends React.Component {
     static defaultProps = {
     };
@@ -11,99 +12,41 @@ export default class IssueWelfare extends React.Component {
     };
     constructor(props) {
         super(props);
-        this.pageSize = 15;
-        this.currentPage = -1;
-        this.sizeArr = ['5', '15', '30', '50', '100'];
-        this.thData = [
-            { title: '发放批次', dataIndex: 'createTime1', key: 'createTime1' },
-            { title: '发放主题', dataIndex: 'createTime2', key: 'createTime2' },
-            { title: '发放时间', dataIndex: 'createTime3', key: 'createTime3' },
-            { title: '实发金额', dataIndex: 'createTime4', key: "createTime4" },
-            { title: '已领金额', dataIndex: 'createTime5', key: 'createTime5' },
-            { title: '未领金额', dataIndex: 'createTime6', key: 'createTime6' },
-            {
-                title: '发放状态', dataIndex: 'createTime7', key: 'createTime7', render: (text, item) => {
-                    return (
-                        <Badge status="warning" text="未激活" />
-                    )
-                }
-            },
-            { title: '已领卡数', dataIndex: 'createTime8', key: 'createTime8' },
-            {
-                title: '操作', key: 'operation', width: 104, render: (text, item) => {
-                    const menu = <Menu>
-                        <Menu.Item>
-                            <a href="#/index">激活</a>
-                        </Menu.Item>
-                        <Menu.Item>
-                            <a href="#/index">详情</a>
-                        </Menu.Item>
-                        <Menu.Item>
-                            <a href="#/index">链接</a>
-                        </Menu.Item>
-                        <Menu.Item>
-                            <a href="#/index">撤销</a>
-                        </Menu.Item>
-                    </Menu>;
-                    return (
-                        <Dropdown overlay={menu}>
-                            <a>操作<Icon type="down" /></a>
-                        </Dropdown>
-                    )
-                }
-            }
-        ],
         this.state = {
-            search:{},
-            thData: [],
-            bodyData: [{
-                'createTime1': '1234',
-                'createTime2': '1234',
-                'createTime3': '1234',
-                'createTime4': '1234',
-                'createTime5': '1234',
-                'createTime6': '1234',
-                'createTime7': '1234',
-                'createTime8': '1234',
-            }],
-            totalRecords: 0, // 总记录数
-            showLoading: false, // 表格是否显示load
-
-            addEmpVisible: false, // 是否显示添加员工对话框
-            addEmpSearch: {}, // 添加员工对话框的输入值
-            batchAddVisible: false, // 是否显示批量新增对话框
-            batchUpdateVisible: false, // 是否显示批量修改对话框
+            search: {},
         }
     }
     componentDidMount() {
-        this.setState({
-            thData: Utils.resetTableTh(this.thData)
-        })
     }
 
-    // 确认添加员工
-    addEmpOk = () => {
-        console.log("添加员工");
-    }
-    // 确认批量新增
-    batchAddVisibleOk = () => {
-
-        console.log("批量新增");
-        
-        // 调用组件里面的方法
-        let formData = this.refs.refUploadFile.getUploadFile();
-        this.fileUrlPath = 'https://jsonplaceholder.typicode.com/posts/';
-        request.post(this.fileUrlPath, formData).then(response => {
-            message.success('上传成功');
-        }, err => {
-            message.error('上传失败');
-        }).catch((error) => {
-            message.error('上传失败');
+    // 立即发卡
+    submitBtm = () => {
+        if (!this.check()) {
+            return false;
+        }
+        if (!this.refs.refUploadFile.isSelectedUploadFile()) {
+            return false;
+        }
+        confirm({
+            title: '确认要发卡吗？',
+            content: '是否确认此次发卡',
+            centered: true,
+            onOk: () => {
+                // 调用组件里面的方法
+                let formData = this.refs.refUploadFile.getUploadFile();
+                formData.append("title", this.state.search.userName);
+                this.fileUrlPath = 'https://jsonplaceholder.typicode.com/posts/';
+                request.post(this.fileUrlPath, formData).then(response => {
+                    message.success('上传并发放成功');
+                }, err => {
+                    message.error('上传失败');
+                }).catch((error) => {
+                    message.error('上传失败');
+                });
+            },
+            onCancel: () => { },
         });
-    }
-    // 确认批量新增
-    batchUpdateVisibleOk = () => {
-        console.log("批量修改");
+
     }
 
     // 图片上传回调
@@ -123,140 +66,79 @@ export default class IssueWelfare extends React.Component {
         this.setState({
             search: search
         });
+
+        this.check(name);
     }
 
-    // 查询
-    queryBtn = () =>{
-        console.log(this.state.search);
+    check = (name) => {
+        let search = this.state.search;
+        let handle = {
+            "userName": () => {
+                if (!search.userName) {
+                    search.userNameErr = "输入发放主题";
+                    this.setState({ search });
+                    return false;
+                }
+                search.userNameErr = "";
+                this.setState({ search });
+                return true;
+            },
+        }
+
+        return global.formCheck(name, handle);
     }
+
 
     render() {
-        const { addEmpSearch } = this.state;
-        let payPagination = {
-            showQuickJumper: true,
-            showSizeChanger: true,
-            pageSizeOptions: this.sizeArr,
-            showTotal: total => `共 ${total} 条数据`,
-            total: this.state.totalRecords,
-            pageSize: this.pageSize
-        }
-        return (
-            <div className="user_manage_wrap">
-                <div className="user_manage_head">
-                    <span>可用余额：<span className="num">100,000</span>元</span>
-                    <Button className="ml30" type="primary" icon="poweroff" onClick={() => this.setState({ addEmpVisible: true })}>发放福利</Button>
-                    <Button className="ml30" type="primary" icon="poweroff" onClick={() => { this.setState({ batchAddVisible: true }) }}>卡面配置</Button>
-                    <Button className="ml30" type="primary" icon="poweroff" onClick={()=>this.setState({batchUpdateVisible: true})}>卡管理</Button>
-                    <Divider></Divider>
-                </div>
-                <div className="query_flex">
-                    <div className="query_flex_item">
-                        <div className="label">发放主题</div>
-                        <div className="control">
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                        </div>
-                    </div>
-                    <div className="query_flex_item">
-                        <div className="label">发放时间</div>
-                        <div className="control">
-                            <Input className="width224" maxLength="30" name="userName1" onChange={this.handleChange} />
-                        </div>
-                    </div>
-                    <div className="query_flex_item">
-                        <div className="label">发放状态</div>
-                        <div className="control">
-                            <Input className="width224" maxLength="30" name="userName2" onChange={this.handleChange} />
-                        </div>
-                    </div>
-                </div>
-                <div className="query_btn_wrap">
-                    <Button type="primary" onClick={this.queryBtn}>立即查询</Button>
-                </div>
-                <Table
-                    rowKey={(r, i) => (i)}
-                    columns={this.state.thData}
-                    dataSource={this.state.bodyData}
-                    pagination={payPagination}
-                    loading={this.state.showLoading}
-                />
+        const { search } = this.state;
+        const Step = Steps.Step;
 
-                <Modal
-                    title="添加员工"
-                    centered
-                    width="700"
-                    visible={this.state.addEmpVisible}
-                    onOk={this.addEmpOk}
-                    onCancel={() => this.setState({ addEmpVisible: false })}
-                >
-                    <Row type="flex" align="middle" className="mb25" gutter={16}>
-                        <Col className="tr" span={3}>姓名</Col>
-                        <Col span={9}>
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                            <div className="error_info">{addEmpSearch.userNameErr}</div>
-                        </Col>
-                        <Col className="tr" span={3}>手机号码</Col>
-                        <Col span={9}>
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                            <div className="error_info">{addEmpSearch.userNameErr}</div>
-                        </Col>
-                    </Row>
-                    <Row type="flex" align="middle" className="mb25" gutter={16}>
-                        <Col className="tr" span={3}>部门</Col>
-                        <Col span={9}>
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                            <div className="error_info">{addEmpSearch.userNameErr}</div>
-                        </Col>
-                        <Col className="tr" span={3}>职位</Col>
-                        <Col span={9}>
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                            <div className="error_info">{addEmpSearch.userNameErr}</div>
-                        </Col>
-                    </Row>
-                    <Row type="flex" align="middle" className="mb25" gutter={16}>
-                        <Col className="tr" span={3}>职级</Col>
-                        <Col span={9}>
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                            <div className="error_info">{addEmpSearch.userNameErr}</div>
-                        </Col>
-                        <Col className="tr" span={3}>身份号码</Col>
-                        <Col span={9}>
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                            <div className="error_info">{addEmpSearch.userNameErr}</div>
-                        </Col>
-                    </Row>
-                </Modal>
-                <Modal
-                    title="批量新增"
-                    centered
-                    visible={this.state.batchAddVisible}
-                    onOk={this.batchAddVisibleOk}
-                    onCancel={() => this.setState({ batchAddVisible: false })}
-                >
-                    <Row type="flex" justify="space-around" align="middle">
-                        <Col span={6}>
-                            <Button icon="download">下载模板</Button>
-                        </Col>
-                        <Col span={1}>
-                            <Divider type="vertical" style={{ height: '86px' }} />
-                        </Col>
-                        <Col span={6} >
-                            <UploadFile ref="refUploadFile" uploadKey="haha"></UploadFile>
-                        </Col>
-                    </Row>
-                </Modal>
-                <Modal
-                    title="批量修改"
-                    centered
-                    visible={this.state.batchUpdateVisible}
-                    onOk={this.batchUpdateVisibleOk}
-                    onCancel={() => this.setState({ batchUpdateVisible: false })}
-                >
-                    <Row type="flex" justify="center" align="middle">
-                        <Col span={6}>
-                            <Button icon="download">导出员工信息</Button>
-                        </Col>
-                    </Row>
-                </Modal>
+        return (
+            <div>
+                <div className="issue_welfare_wrap">
+                    <div className="left">
+                        <div className="vertical_step_wrap">
+                            <div className="title">1</div>
+                            <Divider className="line" type="vertical" />
+                            <div className="title">2</div>
+                            <Divider className="line" type="vertical" />
+                            <div className="title">3</div>
+                        </div>
+                    </div>
+                    <div className="right">
+                        <Row type="flex" align="middle" style={{ marginBottom: '160px'}} gutter={16}>
+                            <Col className="tr" span={2}>发放主题</Col>
+                            <Col span={7}>
+                                <Input className="width224" placeholder="输入10个字内的福利主题" maxLength="10" name="userName" onChange={this.handleChange} />
+                                {!search.userNameErr && <div style={{ position: 'absolute' }}>填写本次发放福利主题，如：中秋福利发放</div>}
+                                {search.userNameErr && <div className="error_info">{search.userNameErr}</div>}
+                            </Col>
+                        </Row>
+                        <Row type="flex" align="middle" style={{ marginBottom: '10px'}} gutter={16}>
+                            <Button onClick={this.queryBtn} icon="download">下载员工信息</Button>
+                        </Row>
+                        <Row type="flex" align="middle" style={{ marginBottom: '75px'}} gutter={16}>
+                            下载当前企业员工信息（excle文件），在文件内编辑好需发放的金额，上传发放
+                        </Row>
+                        <Row type="flex" align="middle" gutter={16}>
+                            <UploadFile ref="refUploadFile" uploadKey="xixix"></UploadFile>
+                        </Row>
+                    </div>
+                </div>
+
+
+                <Row type="flex" justify="center" align="middle" className="mb80" style={{ marginTop: '70px'}} gutter={16}>
+                    <Col span={16}>
+                        <Steps status="wait" size="small">
+                            <Step title="下载公司人员信息" description="下载公司人员信息，在已有基础上修改" />
+                            <Step title="填写文件内发放金额字段" description="在Excle文件内，对应每个人员，填写相应金额" />
+                            <Step title="保存并上传文件" description="检查金额无误以后，保存文件，点击上传按钮，发放福利" />
+                        </Steps>
+                    </Col>
+                </Row>
+                <Row type="flex" justify="center" align="middle" className="mb25" gutter={16}>
+                    <Button type="primary" onClick={this.submitBtm}>立即发卡</Button>
+                </Row>
             </div>
         )
     }

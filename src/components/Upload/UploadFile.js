@@ -112,6 +112,14 @@ export default class UploadFile extends React.Component {
         return formData;
     }
 
+    isSelectedUploadFile = () => { // 是否选择了上传文件
+        if (this.fileList.length == 0) {
+            message.error('请添加需要上传的文件');
+            return false;
+        }
+        return true;
+    }
+
 
     render() {
         const { className, uploadKey, ...others } = this.props;

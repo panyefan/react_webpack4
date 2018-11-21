@@ -1,4 +1,5 @@
 import React from 'react';
+import Utils from '../../utils/Utils'
 import { Login, Register, ForgetPassword } from '../../components/LoginRegister/index';
 
 import './loginPage.less';

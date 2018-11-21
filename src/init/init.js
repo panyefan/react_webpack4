@@ -104,6 +104,7 @@ export default class Init extends Component {
         routeMenus.forEach((item) => {
             tabTitleMap.set(item.funcUrl, item.funcName)
         });
+        console.log(tabTitleMap);
 
         return tabTitleMap;
     }
@@ -256,7 +257,16 @@ export default class Init extends Component {
                     </div>
                 </Sider>
                 <Layout className="layout-elongation">
-                    <Header className="header_wrap"></Header>
+                    <Header className="header_wrap">
+                        <div className="company_name">
+                            <Icon type="bank" style={{color: '#5860E4'}}/>
+                            <a className="name" href="#/company">我是XXXXXXXXX有限公司</a>
+                        </div>
+                        <div className="user_name">
+                            <img className="user_logo" src={require('../images/banner01.png')}></img>
+                            <span className="name">用户名</span>
+                        </div>
+                    </Header>
                     <div className="page_content">
                         <div className="min_width">
                             <Tabs

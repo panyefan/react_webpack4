@@ -1,0 +1,105 @@
+.step_desc {
+    display: inline-block;
+    line-height: 24px;
+    font-size: 16px;
+    margin-left: 8px;
+}
+
+.card_config_content{
+    display: flex;
+    .left{
+        flex: 0 0 300px;
+        .card_wrap{
+            position: relative;
+            width: 280px;
+            height: 170px;
+            border-radius: 12px;
+            overflow: hidden;
+            .card_img{
+                position: absolute;
+                width: 280px;
+                height: 170px;
+            }
+            .card_head{
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                width: 100%;
+                display: flex;
+                padding: 20px 20px 0 20px;
+                color: #FEFFFF;
+                align-items: center;
+                .logo_wrap{
+                    flex: 0 0 50px;
+                    .logo_img{
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        border: 1px solid #FFFFFF;
+                        overflow: hidden;
+                    }
+                }
+                .title_wrtap{
+                    flex: 1;
+                    .title{
+                        font-size: 15px;
+                    }
+                    .desc{
+                        font-size: 14px;
+                    }
+                }
+                .qr_img_wrap{
+                    flex: 0 0 40px;
+                    .qr_img{
+                        width: 20px;
+                        height: 20px;
+                    }
+                }
+            }
+            .card_footer{
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                z-index: 1;
+                padding: 0 20px 20px 20px;
+                color: #FEFFFF;
+            }
+        }
+    }
+    .right{
+        flex: 1;
+    }
+}
+
+.card_bg_wrap{
+    display: inline-block;
+    width: 30px;
+    height: 28px;
+    font: 0;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 1px solid #FFFFFF;
+    .card_bg_img{
+        width: 28px;
+        height: 17px;
+    }
+}
+.sele_card_bg{
+    border: 1px solid #1E7FF4;
+}
+
+.merchant_wrap{
+    margin-bottom: 20px;
+    .merchant_logo_img{
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        margin: 0 20px;
+        border: 1px solid #979797;
+    }
+    .mlr20{
+        margin: 0 20px;
+    }
+}

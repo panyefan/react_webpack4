@@ -20,7 +20,7 @@ const router = {
     },
     childRoutes: [
         {
-            path: 'login',        //登录
+            path: 'login',        // 登录
             getComponent(nextState, callback) {
                 require.ensure([], require => {
                     callback(null, require('../pages/loginPage/loginPage'));
@@ -28,7 +28,7 @@ const router = {
             }
         },
         {
-            path: 'index',        //首页
+            path: 'index',        // 首页
             getComponent(nextState, callback) {
                 require.ensure([], require => {
                     callback(null, require('../pages/index/index'));
@@ -36,7 +36,15 @@ const router = {
             }
         },
         {
-            path: 'userManage',    //员工管理
+            path: 'company',        // 公司信息
+            getComponent(nextState, callback) {
+                require.ensure([], require => {
+                    callback(null, require('../pages/company/company'));
+                }, 'company');
+            }
+        },
+        {
+            path: 'userManage',    // 员工管理
             getComponent(nextState, callback) {
                 require.ensure([], require => {
                     callback(null, require('../pages/userManage/userManage'));
@@ -44,11 +52,51 @@ const router = {
             }
         },
         {
-            path: 'issueWelfare',    //发放福利
+            path: 'issueWelfare',    // 发放福利
             getComponent(nextState, callback) {
                 require.ensure([], require => {
                     callback(null, require('../pages/issueWelfare/issueWelfare'));
                 }, 'issueWelfare');
+            }
+        },
+        {
+            path: 'issueWelfare-list',    // 发放福利--列表
+            getComponent(nextState, callback) {
+                require.ensure([], require => {
+                    callback(null, require('../pages/issueWelfare/issueWelfare-list'));
+                }, 'issueWelfare-list');
+            }
+        },
+        {
+            path: 'issueWelfare-detail',    // 发放福利--详情
+            getComponent(nextState, callback) {
+                require.ensure([], require => {
+                    callback(null, require('../pages/issueWelfare/issueWelfare-detail'));
+                }, 'issueWelfare-detail');
+            }
+        },
+        {
+            path: 'cardConfig',    // 发放福利--卡面配置
+            getComponent(nextState, callback) {
+                require.ensure([], require => {
+                    callback(null, require('../pages/issueWelfare/cardConfig'));
+                }, 'cardConfig');
+            }
+        },
+        {
+            path: 'welfareCar-list',    // 发放福利--卡管理
+            getComponent(nextState, callback) {
+                require.ensure([], require => {
+                    callback(null, require('../pages/issueWelfare/welfareCar-list'));
+                }, 'welfareCar-list');
+            }
+        },
+        {
+            path: 'welfareCar-detail',    // 发放福利--卡管理--详情
+            getComponent(nextState, callback) {
+                require.ensure([], require => {
+                    callback(null, require('../pages/issueWelfare/welfareCar-detail'));
+                }, 'welfareCar-detail');
             }
         },
     ]

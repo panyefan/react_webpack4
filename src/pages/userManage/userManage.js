@@ -1,9 +1,10 @@
 import React from 'react';
-import { Row, Col, Divider, Input, Button, Icon, Table, Dropdown, Menu, Badge, Modal, message } from 'antd';
+import { Row, Col, Divider, Input, Button, Icon, Table, Dropdown, Menu, Badge, Modal, message, Select } from 'antd';
 import Utils from '../../utils/Utils';
 import { UploadFile } from '../../components/Upload/index';
 import './userManage.less';
 
+const confirm = Modal.confirm;
 export default class userManage extends React.Component {
     static defaultProps = {
     };
@@ -23,14 +24,14 @@ export default class userManage extends React.Component {
             { title: '身份证后6位', dataIndex: 'createTime6', key: 'createTime6' },
             { title: '添加时间', dataIndex: 'createTime7', key: 'createTime7' },
             {
-                title: '发放状态', dataIndex: 'createTime8', key: 'createTime8', render: (text, item) => {
+                title: '领取状态', dataIndex: 'createTime8', key: 'createTime8', render: (text, item) => {
                     return (
                         <Badge status="warning" text="未领" />
                     )
                 }
             },
             {
-                title: '员工状态', dataIndex: 'createTime9', key: 'createTime9', render: (text, item) => {
+                title: '卡状态', dataIndex: 'createTime9', key: 'createTime9', render: (text, item) => {
                     return (
                         <Badge status="processing" text="离职" />
                     )
@@ -40,10 +41,17 @@ export default class userManage extends React.Component {
                 title: '操作', key: 'operation', width: 104, render: (text, item) => {
                     const menu = <Menu>
                         <Menu.Item>
-                            <a href="#/index">修改</a>
+                            {/* 已领福利卡后，离职后，不可修改 */}
+                            <a href="">修改</a>
                         </Menu.Item>
                         <Menu.Item>
-                            <a href="#/index">离职</a>
+                            <a href="">离职</a>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <a onClick={()=>{this.setState({updataStaffVisible:true})}}>修改</a>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <a onClick={this.delectStaffData}>删除</a>
                         </Menu.Item>
                     </Menu>;
                     return (
@@ -69,18 +77,37 @@ export default class userManage extends React.Component {
                 'createTime9': '1234',
             }],
             totalRecords: 0, // 总记录数
-            showLoading: false, // 表格是否显示load
+            showLoading: false, // 表格load
 
-            addEmpVisible: false, // 是否显示添加员工对话框
+            addEmpVisible: false, // 添加员工对话框
             addEmpSearch: {}, // 添加员工对话框的输入值
-            batchAddVisible: false, // 是否显示批量新增对话框
-            batchUpdateVisible: false, // 是否显示批量修改对话框
+            batchAddVisible: false, // 批量新增对话框
+            batchUpdateVisible: false, // 批量修改对话框
+            updataStaffVisible: false, // 修改员工对话框
+            resultInfoVisible: false, // 上传失败对话框
         }
     }
     componentDidMount() {
         this.setState({
             thData: Utils.resetTableTh(this.thData)
         })
+    }
+
+    // 修改员工
+    updataStaffVisibleOk = ()=>{
+        console.log("修改员工");
+    }
+    // 删除员工
+    delectStaffData = ()=>{
+        confirm({
+            title: '确认要删除这条信息吗？',
+            content: '删除该员工之后，在员工列表内将查找不到该员工信息',
+            centered: true,
+            onOk: () => {
+                console.log("删除成功");
+            },
+            onCancel: () => { },
+        });
     }
 
     // 确认添加员工
@@ -91,21 +118,49 @@ export default class userManage extends React.Component {
     batchAddVisibleOk = () => {
 
         console.log("批量新增");
+        this.setState({resultInfoVisible:true});
+        return;
         
         // 调用组件里面的方法
-        let formData = this.refs.refUploadFile.getUploadFile();
+        let formData = this.refs.refBatchAddUploadFile.getUploadFile();
+        if(formData == false){
+            return false;
+        }
         this.fileUrlPath = 'https://jsonplaceholder.typicode.com/posts/';
         request.post(this.fileUrlPath, formData).then(response => {
             message.success('上传成功');
         }, err => {
-            message.error('上传失败');
+            this.setState({resultInfoVisible:true});
         }).catch((error) => {
-            message.error('上传失败');
+            this.setState({resultInfoVisible:true});
         });
     }
-    // 确认批量新增
+    // 确认批量修改
     batchUpdateVisibleOk = () => {
         console.log("批量修改");
+
+        if(!this.refs.refBatchUpdateUploadFile.isSelectedUploadFile()){
+            return false;
+        }
+        confirm({
+            title: '确认要导入这份员工信息吗？',
+            content: '您导入的新的员工信息会覆盖原有信息，如果导入的员工以前不存在，将自动新增员工。',
+            centered: true,
+            onOk:() => {
+                // 调用组件里面的方法
+                let formData = this.refs.refBatchUpdateUploadFile.getUploadFile();
+                formData.append("title", this.state.search.userName);
+                this.fileUrlPath = 'https://jsonplaceholder.typicode.com/posts/';
+                request.post(this.fileUrlPath, formData).then(response => {
+                    message.success('上传并导入成功');
+                }, err => {
+                    message.error('上传失败');
+                }).catch((error) => {
+                    message.error('上传失败');
+                });
+            },
+            onCancel:() => {},
+        });
     }
 
     // 图片上传回调
@@ -126,6 +181,22 @@ export default class userManage extends React.Component {
             search: search
         });
     }
+    // 领取状态
+    handleSelectChange = (value) => {
+        let search = this.state.search;
+        search["selectvalue"] = value;
+        this.setState({
+            search: search
+        });
+    }
+    // 卡状态
+    handleCardSelectChange = (value) => {
+        let search = this.state.search;
+        search["selectvalue1"] = value;
+        this.setState({
+            search: search
+        });
+    }
 
     // 查询
     queryBtn = () =>{
@@ -133,6 +204,7 @@ export default class userManage extends React.Component {
     }
 
     render() {
+        const Option = Select.Option;
         const { addEmpSearch } = this.state;
         let payPagination = {
             showQuickJumper: true,
@@ -195,15 +267,21 @@ export default class userManage extends React.Component {
                         </div>
                     </div>
                     <div className="query_flex_item">
-                        <div className="label">发放状态</div>
+                        <div className="label">领取状态</div>
                         <div className="control">
-                            <Input className="width224" maxLength="30" name="userName7" onChange={this.handleChange} />
+                            <Select className="width224" onChange={this.handleSelectChange}>
+                                <Option value="1">Jack</Option>
+                                <Option value="2">Lucy</Option>
+                            </Select>
                         </div>
                     </div>
                     <div className="query_flex_item">
                         <div className="label">卡状态</div>
                         <div className="control">
-                            <Input className="width224" maxLength="30" name="userName8" onChange={this.handleChange} />
+                            <Select className="width224" onChange={this.handleCardSelectChange}>
+                                <Option value="1">Jack</Option>
+                                <Option value="2">Lucy</Option>
+                            </Select>
                         </div>
                     </div>
                 </div>
@@ -227,19 +305,19 @@ export default class userManage extends React.Component {
                     onCancel={() => this.setState({ addEmpVisible: false })}
                 >
                     <Row type="flex" align="middle" className="mb25" gutter={16}>
-                        <Col className="tr" span={3}>姓名</Col>
+                        <Col className="tr" span={3}><i className="required">*</i>姓名</Col>
                         <Col span={9}>
                             <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
                             <div className="error_info">{addEmpSearch.userNameErr}</div>
                         </Col>
-                        <Col className="tr" span={3}>手机号码</Col>
+                        <Col className="tr" span={3}><i className="required">*</i>手机号码</Col>
                         <Col span={9}>
                             <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
                             <div className="error_info">{addEmpSearch.userNameErr}</div>
                         </Col>
                     </Row>
                     <Row type="flex" align="middle" className="mb25" gutter={16}>
-                        <Col className="tr" span={3}>部门</Col>
+                        <Col className="tr" span={3}>年龄</Col>
                         <Col span={9}>
                             <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
                             <div className="error_info">{addEmpSearch.userNameErr}</div>
@@ -256,7 +334,19 @@ export default class userManage extends React.Component {
                             <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
                             <div className="error_info">{addEmpSearch.userNameErr}</div>
                         </Col>
-                        <Col className="tr" span={3}>身份号码</Col>
+                        <Col className="tr" span={3}><i className="required">*</i>身份号码</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                    </Row>
+                    <Row type="flex" align="middle" className="mb25" gutter={16}>
+                        <Col className="tr" span={3}>职位状态</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                        <Col className="tr" span={3}>部门</Col>
                         <Col span={9}>
                             <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
                             <div className="error_info">{addEmpSearch.userNameErr}</div>
@@ -278,9 +368,48 @@ export default class userManage extends React.Component {
                             <Divider type="vertical" style={{ height: '86px' }} />
                         </Col>
                         <Col span={6} >
-                            <UploadFile ref="refUploadFile" uploadKey="haha"></UploadFile>
+                            <UploadFile ref="refBatchAddUploadFile" uploadKey="haha"></UploadFile>
                         </Col>
                     </Row>
+                </Modal>
+                <Modal
+                    title="上传失败"
+                    centered
+                    visible={this.state.resultInfoVisible}
+                    onOk={() => this.setState({ resultInfoVisible: false })}
+                    onCancel={() => this.setState({ resultInfoVisible: false })}
+                >
+                    <div className="result_info_wrap">
+                        <div className="left">结果:</div>
+                        <div className="right">
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                            <p>第 1 行 第 4 列 格式错误</p>
+                        </div>
+                    </div>
                 </Modal>
                 <Modal
                     title="批量修改"
@@ -291,7 +420,68 @@ export default class userManage extends React.Component {
                 >
                     <Row type="flex" justify="center" align="middle">
                         <Col span={6}>
-                            <Button icon="download">导出员工信息</Button>
+                            <UploadFile ref="refBatchUpdateUploadFile" uploadKey="haha"></UploadFile>
+                        </Col>
+                    </Row>
+                </Modal>
+                <Modal
+                    title="修改员工"
+                    centered
+                    width="700"
+                    visible={this.state.updataStaffVisible}
+                    onOk={this.updataStaffVisibleOk}
+                    onCancel={() => this.setState({ updataStaffVisible: false })}
+                >
+                    <Row type="flex" align="middle" className="mb25" gutter={16}>
+                        <Col className="tr" span={3}><i className="required">*</i>姓名</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                        <Col className="tr" span={3}><i className="required">*</i>手机号码</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                    </Row>
+                    <Row type="flex" align="middle" className="mb25" gutter={16}>
+                        <Col className="tr" span={3}>年龄</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                        <Col className="tr" span={3}>职位</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                    </Row>
+                    <Row type="flex" align="middle" className="mb25" gutter={16}>
+                        <Col className="tr" span={3}>职级</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                        <Col className="tr" span={3}><i className="required">*</i>身份号码</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                    </Row>
+                    <Row type="flex" align="middle" className="mb25" gutter={16}>
+                        <Col className="tr" span={3}>职位状态</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                        <Col className="tr" span={3}>员工ID</Col>
+                        <Col span={9}>412347234637264736</Col>
+                    </Row>
+                    <Row type="flex" align="middle" className="mb25" gutter={16}>
+                        <Col className="tr" span={3}>部门</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
                         </Col>
                     </Row>
                 </Modal>

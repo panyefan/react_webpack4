@@ -169,7 +169,7 @@ export default class CompanyDetail extends React.Component {
                         <Hoverable>
                             <Card
                                 type="inner"
-                                title="证件上传"
+                                title="证件信息"
                                 style={{ width: 500 }}
                                 extra={<Button type="primary" icon="edit" onClick={()=>this.companyInfoEdit('2')}>编辑</Button>}
                             >

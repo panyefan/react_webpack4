@@ -72,16 +72,16 @@ export default class ForgetPassword extends React.Component {
     check = (name) => {
         let search = this.state.search;
         let handle = {
-            "userName": () => {
-                if (!search.userName) {
-                    search.userNameErr = "输入企业名称";
-                    this.setState({ search });
-                    return false;
-                }
-                search.userNameErr = "";
-                this.setState({ search });
-                return true;
-            },
+            // "userName": () => {
+            //     if (!search.userName) {
+            //         search.userNameErr = "输入企业名称";
+            //         this.setState({ search });
+            //         return false;
+            //     }
+            //     search.userNameErr = "";
+            //     this.setState({ search });
+            //     return true;
+            // },
             "phone": () => {
                 if (!search.phone) {
                     search.phoneErr = "请输入手机号码";
@@ -168,10 +168,10 @@ export default class ForgetPassword extends React.Component {
                     <div className="title">忘记密码</div>
                     <div className="icon"></div>
                     <div className="login_panel_wrap">
-                        <Row className="mb25">
+                        {/* <Row className="mb25">
                             <Input className="login_input" placeholder="输入企业名称" maxLength="30" name="userName" onChange={this.handleChange}/>
                             <div className="error_info">{search.userNameErr}</div>
-                        </Row>
+                        </Row> */}
                         <Row className="mb25">
                             <Input className="login_input" placeholder="输入手机号码" maxLength="11" name="phone" onChange={this.handleChange}/>
                             <div className="error_info">{search.phoneErr}</div>
