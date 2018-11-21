@@ -9,6 +9,7 @@ const routeMenus = [
 	{ funcUrl: 'issueWelfare', funcName: '立即发放福利' },
 	{ funcUrl: 'welfareCar-list', funcName: '卡管理' },
 	{ funcUrl: 'welfareCar-detail', funcName: '卡管理详情' },
+	{ funcUrl: 'pay', funcName: '充值' },
 ];
 
 export default routeMenus;

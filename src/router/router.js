@@ -99,6 +99,14 @@ const router = {
                 }, 'welfareCar-detail');
             }
         },
+        {
+            path: 'pay',    // 充值
+            getComponent(nextState, callback) {
+                require.ensure([], require => {
+                    callback(null, require('../pages/pay/pay'));
+                }, 'pay');
+            }
+        },
     ]
 }
 

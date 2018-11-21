@@ -8,7 +8,7 @@ global.SC = {
     loginFlag: true,
     loginUrl: '#/login',
     // indexUrl: '#/index',
-    indexUrl: '#/cardConfig',
+    indexUrl: '#/pay',
 }
 
 if (process.env.NODE_ENV != 'production') { // 开发环境
