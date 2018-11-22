@@ -20,8 +20,7 @@ export default class Pay extends React.Component {
             <div>
                 <Row type="flex" align="middle" className="mb25" gutter={16}>
                     <Col className="tr" span={3}>支付方式:</Col>
-                    <Col span={12}>
-                    </Col>
+                    <Col span={12} className="fw700fs16">线下支付</Col>
                 </Row>
                 <Row type="flex" align="middle" className="mb25" gutter={16}>
                     <Col className="tr" span={3}></Col>

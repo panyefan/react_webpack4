@@ -5,10 +5,10 @@ import Utils from '../utils/Utils';
 // 初始化一个全局变量对象
 global.SC = {
     baseUrl: '',
-    loginFlag: true,
+    loginFlag: false,
     loginUrl: '#/login',
-    // indexUrl: '#/index',
-    indexUrl: '#/pay',
+    indexUrl: '#/index',
+    // indexUrl: '#/issueWelfare',
 }
 
 if (process.env.NODE_ENV != 'production') { // 开发环境

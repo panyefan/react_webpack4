@@ -1,7 +1,7 @@
 # 本React项目框架特色
 ### 1、使用mobx状态管理
 ### 2、使用antd的UI库
-### 3、使用stylus的CSS预处理框架 https://www.zhangxinxu.com/jq/stylus/
+### 3、使用less的CSS预处理框架
 ### 4、使用react-router路由
 ### 5、使用postcss、autoprefixer插件对CSS样式自动添加前缀
 ### 6、开发环境使用webpack.DllPlugin，提前打包一些基本不怎么修改的文件，提高打包效率

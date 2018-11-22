@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Divider, Input, Button, Icon, Dropdown, Modal, message, Steps } from 'antd';
+import { Row, Col, Divider, Input, Button, Icon, Timeline, Modal, message, Steps } from 'antd';
 import Utils from '../../utils/Utils';
 import { UploadFile } from '../../components/Upload/index';
 import './issueWelfare.less';
@@ -19,7 +19,7 @@ export default class IssueWelfare extends React.Component {
     componentDidMount() {
     }
 
-    // 立即发卡
+    // 立即发放
     submitBtm = () => {
         if (!this.check()) {
             return false;
@@ -28,8 +28,8 @@ export default class IssueWelfare extends React.Component {
             return false;
         }
         confirm({
-            title: '确认要发卡吗？',
-            content: '是否确认此次发卡',
+            title: '确认要发放吗？',
+            content: '是否确认此次发放',
             centered: true,
             onOk: () => {
                 // 调用组件里面的方法
@@ -95,39 +95,38 @@ export default class IssueWelfare extends React.Component {
 
         return (
             <div>
-                <div className="issue_welfare_wrap">
-                    <div className="left">
-                        <div className="vertical_step_wrap">
-                            <div className="title">1</div>
-                            <Divider className="line" type="vertical" />
-                            <div className="title">2</div>
-                            <Divider className="line" type="vertical" />
-                            <div className="title">3</div>
+                <Timeline style={{marginLeft:'40px'}}>
+                    <Timeline.Item dot={<span className="step_num">1</span>}>
+                        <div className="mgl20">
+                            <Row type="flex" align="middle" style={{ marginBottom: '100px' }} gutter={16}>
+                                <Col className="tr" span={2}>发放主题</Col>
+                                <Col span={7}>
+                                    <Input className="width224" placeholder="输入10个字内的福利主题" maxLength="10" name="userName" onChange={this.handleChange} />
+                                    {!search.userNameErr && <div style={{ position: 'absolute' }}>填写本次发放福利主题，如：中秋福利发放</div>}
+                                    {search.userNameErr && <div className="error_info">{search.userNameErr}</div>}
+                                </Col>
+                            </Row>
                         </div>
-                    </div>
-                    <div className="right">
-                        <Row type="flex" align="middle" style={{ marginBottom: '160px'}} gutter={16}>
-                            <Col className="tr" span={2}>发放主题</Col>
-                            <Col span={7}>
-                                <Input className="width224" placeholder="输入10个字内的福利主题" maxLength="10" name="userName" onChange={this.handleChange} />
-                                {!search.userNameErr && <div style={{ position: 'absolute' }}>填写本次发放福利主题，如：中秋福利发放</div>}
-                                {search.userNameErr && <div className="error_info">{search.userNameErr}</div>}
-                            </Col>
-                        </Row>
-                        <Row type="flex" align="middle" style={{ marginBottom: '10px'}} gutter={16}>
-                            <Button onClick={this.queryBtn} icon="download">下载员工信息</Button>
-                        </Row>
-                        <Row type="flex" align="middle" style={{ marginBottom: '75px'}} gutter={16}>
-                            下载当前企业员工信息（excle文件），在文件内编辑好需发放的金额，上传发放
-                        </Row>
-                        <Row type="flex" align="middle" gutter={16}>
-                            <UploadFile ref="refUploadFile" uploadKey="xixix"></UploadFile>
-                        </Row>
-                    </div>
-                </div>
-
-
-                <Row type="flex" justify="center" align="middle" className="mb80" style={{ marginTop: '70px'}} gutter={16}>
+                    </Timeline.Item>
+                    <Timeline.Item dot={<span className="step_num">2</span>}>
+                        <div className="mgl20">
+                            <Row type="flex" align="middle" style={{ marginBottom: '10px' }} gutter={16}>
+                                <Button onClick={this.queryBtn} icon="download">下载员工信息</Button>
+                            </Row>
+                            <Row type="flex" align="middle" style={{ marginBottom: '75px' }} gutter={16}>
+                                下载当前企业员工信息（excle文件），在文件内编辑好需发放的金额，上传发放
+                            </Row>
+                        </div>
+                    </Timeline.Item>
+                    <Timeline.Item dot={<span className="step_num">3</span>}>
+                        <div className="mgl20">
+                            <Row type="flex" align="middle" gutter={16}>
+                                <UploadFile ref="refUploadFile" uploadKey="xixix"></UploadFile>
+                            </Row>
+                        </div>
+                    </Timeline.Item>
+                </Timeline>
+                <Row type="flex" justify="center" align="middle" className="mb80" style={{ marginTop: '70px' }} gutter={16}>
                     <Col span={16}>
                         <Steps status="wait" size="small">
                             <Step title="下载公司人员信息" description="下载公司人员信息，在已有基础上修改" />
@@ -137,7 +136,7 @@ export default class IssueWelfare extends React.Component {
                     </Col>
                 </Row>
                 <Row type="flex" justify="center" align="middle" className="mb25" gutter={16}>
-                    <Button type="primary" onClick={this.submitBtm}>立即发卡</Button>
+                    <Button type="primary" onClick={this.submitBtm}>立即发放</Button>
                 </Row>
             </div>
         )

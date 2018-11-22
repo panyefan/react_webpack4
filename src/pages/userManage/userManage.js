@@ -31,7 +31,7 @@ export default class userManage extends React.Component {
                 }
             },
             {
-                title: '卡状态', dataIndex: 'createTime9', key: 'createTime9', render: (text, item) => {
+                title: '员工状态', dataIndex: 'createTime9', key: 'createTime9', render: (text, item) => {
                     return (
                         <Badge status="processing" text="离职" />
                     )
@@ -189,8 +189,8 @@ export default class userManage extends React.Component {
             search: search
         });
     }
-    // 卡状态
-    handleCardSelectChange = (value) => {
+    // 员工状态
+    handleStaffSelectChange = (value) => {
         let search = this.state.search;
         search["selectvalue1"] = value;
         this.setState({
@@ -276,9 +276,9 @@ export default class userManage extends React.Component {
                         </div>
                     </div>
                     <div className="query_flex_item">
-                        <div className="label">卡状态</div>
+                        <div className="label">员工状态</div>
                         <div className="control">
-                            <Select className="width224" onChange={this.handleCardSelectChange}>
+                            <Select className="width224" onChange={this.handleStaffSelectChange}>
                                 <Option value="1">Jack</Option>
                                 <Option value="2">Lucy</Option>
                             </Select>

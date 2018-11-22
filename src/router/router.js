@@ -7,15 +7,9 @@ const router = {
     },
     indexRoute: {
         getComponent(nextState, callback) {
-            if (SC.loginFlag) {
-                require.ensure([], require => {
-                    callback(null, require('../pages/index/index'));
-                }, 'index');
-            } else {
-                require.ensure([], require => {
-                    callback(null, require('../pages/loginPage/loginPage'));
-                }, 'login');
-            }
+            require.ensure([], require => {
+                callback(null, require('../pages/index/index'));
+            }, 'index');
         }
     },
     childRoutes: [
