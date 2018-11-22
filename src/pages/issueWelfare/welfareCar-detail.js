@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col, Divider, Input, Button, Icon, Table, Dropdown, Menu, Badge, Modal, message, Select } from 'antd';
 import Utils from '../../utils/Utils';
 import { UploadFile } from '../../components/Upload/index';
+import { CommomRangePicker } from '../../components/CommonDatePicker/index.js';
 import './welfareCar-detail.less';
 
 export default class WelfareCarDetail extends React.Component {
@@ -79,6 +80,15 @@ export default class WelfareCarDetail extends React.Component {
             search: search
         });
     }
+    // 交易时间
+    onDateChange = (value) => {
+        let search = this.state.search;
+        search["startTime"] = value[0];
+        search["endTime"] = value[1];
+        this.setState({
+            search: search
+        });
+    }
 
     // 查询
     queryBtn = () => {
@@ -113,7 +123,7 @@ export default class WelfareCarDetail extends React.Component {
                     <div className="query_flex_item">
                         <div className="label">交易时间</div>
                         <div className="control">
-                            <Input className="width224" maxLength="30" name="userName3" onChange={this.handleChange} />
+                            <CommomRangePicker onChangeCallBack={this.onDateChange}/>
                         </div>
                     </div>
                 </div>

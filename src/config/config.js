@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Utils from '../utils/Utils';
+import { Modal } from 'antd';
 
 // ******************************************* 全局参数start *******************************************
 // 初始化一个全局变量对象
@@ -57,6 +58,12 @@ global.request.interceptors.request.use((config) => {
     return config;
 }, (error) => {
     //请求错误时做些事
+    Modal.error({
+        title: '请求发生错误',
+        content: '',
+        centered: true,
+        onOk: () => {},
+    });
     return Promise.reject(error);
 });
 
@@ -66,5 +73,11 @@ global.request.interceptors.response.use((response) => {
     return response;
 }, (error) => {
     // 对响应错误做点什么
+    Modal.error({
+        title: '响应错误发生错误',
+        content: '',
+        centered: true,
+        onOk: () => {},
+    });
     return Promise.reject(error);
 });

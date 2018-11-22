@@ -104,7 +104,6 @@ export default class Init extends Component {
         routeMenus.forEach((item) => {
             tabTitleMap.set(item.funcUrl, item.funcName)
         });
-        console.log(tabTitleMap);
 
         return tabTitleMap;
     }

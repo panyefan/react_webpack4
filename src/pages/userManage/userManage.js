@@ -1,10 +1,12 @@
 import React from 'react';
-import { Row, Col, Divider, Input, Button, Icon, Table, Dropdown, Menu, Badge, Modal, message, Select } from 'antd';
+import { Row, Col, Divider, Input, Button, Icon, Table, Dropdown, Menu, Badge, Modal, message, Select, Radio } from 'antd';
 import Utils from '../../utils/Utils';
 import { UploadFile } from '../../components/Upload/index';
+import { CommomRangePicker } from '../../components/CommonDatePicker/index.js';
 import './userManage.less';
 
 const confirm = Modal.confirm;
+const RadioGroup = Radio.Group;
 export default class userManage extends React.Component {
     static defaultProps = {
     };
@@ -85,6 +87,9 @@ export default class userManage extends React.Component {
             batchUpdateVisible: false, // 批量修改对话框
             updataStaffVisible: false, // 修改员工对话框
             resultInfoVisible: false, // 上传失败对话框
+
+            updataStaffSexRadioValue: 1, // 修改员工默认性别为男
+            addStaffSexRadioValue: 1, // 添加员工默认性别为男
         }
     }
     componentDidMount() {
@@ -197,6 +202,15 @@ export default class userManage extends React.Component {
             search: search
         });
     }
+    // 交易时间
+    onDateChange = (value) => {
+        let search = this.state.search;
+        search["startTime"] = value[0];
+        search["endTime"] = value[1];
+        this.setState({
+            search: search
+        });
+    }
 
     // 查询
     queryBtn = () =>{
@@ -263,7 +277,7 @@ export default class userManage extends React.Component {
                     <div className="query_flex_item">
                         <div className="label">添加时间</div>
                         <div className="control">
-                            <Input className="width224" maxLength="30" name="userName6" onChange={this.handleChange} />
+                            <CommomRangePicker onChangeCallBack={this.onDateChange} />
                         </div>
                     </div>
                     <div className="query_flex_item">
@@ -317,31 +331,33 @@ export default class userManage extends React.Component {
                         </Col>
                     </Row>
                     <Row type="flex" align="middle" className="mb25" gutter={16}>
-                        <Col className="tr" span={3}>年龄</Col>
-                        <Col span={9}>
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                            <div className="error_info">{addEmpSearch.userNameErr}</div>
-                        </Col>
-                        <Col className="tr" span={3}>职位</Col>
-                        <Col span={9}>
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                            <div className="error_info">{addEmpSearch.userNameErr}</div>
-                        </Col>
-                    </Row>
-                    <Row type="flex" align="middle" className="mb25" gutter={16}>
-                        <Col className="tr" span={3}>职级</Col>
-                        <Col span={9}>
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                            <div className="error_info">{addEmpSearch.userNameErr}</div>
-                        </Col>
                         <Col className="tr" span={3}><i className="required">*</i>身份号码</Col>
                         <Col span={9}>
                             <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
                             <div className="error_info">{addEmpSearch.userNameErr}</div>
                         </Col>
+                        <Col className="tr" span={3}>年龄</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
                     </Row>
                     <Row type="flex" align="middle" className="mb25" gutter={16}>
-                        <Col className="tr" span={3}>职位状态</Col>
+                        <Col className="tr" span={3}>性别</Col>
+                        <Col span={9}>
+                            <RadioGroup onChange={(e) => {this.setState({addStaffSexRadioValue: e.target.value});}} value={this.state.addStaffSexRadioValue}>
+                                <Radio value={1}>男</Radio>
+                                <Radio value={2}>女</Radio>
+                            </RadioGroup>
+                        </Col>
+                        <Col className="tr" span={3}>职级</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                    </Row>
+                    <Row type="flex" align="middle" className="mb25" gutter={16}>
+                        <Col className="tr" span={3}>员工状态</Col>
                         <Col span={9}>
                             <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
                             <div className="error_info">{addEmpSearch.userNameErr}</div>
@@ -351,6 +367,10 @@ export default class userManage extends React.Component {
                             <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
                             <div className="error_info">{addEmpSearch.userNameErr}</div>
                         </Col>
+                    </Row>
+                    <Row type="flex" align="middle" className="mb25" gutter={16}>
+                        <Col className="tr" span={3}>职位</Col>
+                        <Col span={9}>在职</Col>
                     </Row>
                 </Modal>
                 <Modal
@@ -445,31 +465,33 @@ export default class userManage extends React.Component {
                         </Col>
                     </Row>
                     <Row type="flex" align="middle" className="mb25" gutter={16}>
-                        <Col className="tr" span={3}>年龄</Col>
-                        <Col span={9}>
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                            <div className="error_info">{addEmpSearch.userNameErr}</div>
-                        </Col>
-                        <Col className="tr" span={3}>职位</Col>
-                        <Col span={9}>
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                            <div className="error_info">{addEmpSearch.userNameErr}</div>
-                        </Col>
-                    </Row>
-                    <Row type="flex" align="middle" className="mb25" gutter={16}>
-                        <Col className="tr" span={3}>职级</Col>
-                        <Col span={9}>
-                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
-                            <div className="error_info">{addEmpSearch.userNameErr}</div>
-                        </Col>
                         <Col className="tr" span={3}><i className="required">*</i>身份号码</Col>
                         <Col span={9}>
                             <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
                             <div className="error_info">{addEmpSearch.userNameErr}</div>
                         </Col>
+                        <Col className="tr" span={3}>年龄</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
                     </Row>
                     <Row type="flex" align="middle" className="mb25" gutter={16}>
-                        <Col className="tr" span={3}>职位状态</Col>
+                        <Col className="tr" span={3}>性别</Col>
+                        <Col span={9}>
+                            <RadioGroup onChange={(e) => {this.setState({updataStaffSexRadioValue: e.target.value});}} value={this.state.updataStaffSexRadioValue}>
+                                <Radio value={1}>男</Radio>
+                                <Radio value={2}>女</Radio>
+                            </RadioGroup>
+                        </Col>
+                        <Col className="tr" span={3}>职级</Col>
+                        <Col span={9}>
+                            <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
+                            <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                    </Row>
+                    <Row type="flex" align="middle" className="mb25" gutter={16}>
+                        <Col className="tr" span={3}>员工状态</Col>
                         <Col span={9}>
                             <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
                             <div className="error_info">{addEmpSearch.userNameErr}</div>
@@ -482,6 +504,10 @@ export default class userManage extends React.Component {
                         <Col span={9}>
                             <Input className="width224" maxLength="30" name="userName" onChange={this.handleChange} />
                             <div className="error_info">{addEmpSearch.userNameErr}</div>
+                        </Col>
+                        <Col className="tr" span={3}>职位</Col>
+                        <Col span={9}>
+                            离职（跟随列表里面的状态）
                         </Col>
                     </Row>
                 </Modal>

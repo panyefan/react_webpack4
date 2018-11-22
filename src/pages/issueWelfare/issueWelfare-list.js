@@ -3,6 +3,7 @@ import { Row, Col, Divider, Input, Button, Icon, Table, Dropdown, Menu, Badge, M
 import Utils from '../../utils/Utils';
 import copy from 'copy-to-clipboard'; // 复制到剪贴板
 import QRCode from 'qrcode.react'; // 根据链接生成二维码
+import { CommomRangePicker } from '../../components/CommonDatePicker/index.js';
 import './issueWelfare-list.less';
 
 const confirm = Modal.confirm;
@@ -109,6 +110,16 @@ export default class IssueWelfareList extends React.Component {
         });
     }
 
+    // 交易时间
+    onDateChange = (value) => {
+        let search = this.state.search;
+        search["startTime"] = value[0];
+        search["endTime"] = value[1];
+        this.setState({
+            search: search
+        });
+    }
+
     // 查询
     queryBtn = () => {
         console.log(this.state.search);
@@ -173,7 +184,7 @@ export default class IssueWelfareList extends React.Component {
                     <div className="query_flex_item">
                         <div className="label">发放时间</div>
                         <div className="control">
-                            <Input className="width224" maxLength="30" name="userName1" onChange={this.handleChange} />
+                            <CommomRangePicker onChangeCallBack={this.onDateChange}/>
                         </div>
                     </div>
                     <div className="query_flex_item">

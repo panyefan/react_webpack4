@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, Divider, Input, Button, Icon, Table, Dropdown, Menu, Badge, Modal, message, Select } from 'antd';
+import { CommomRangePicker } from '../../components/CommonDatePicker/index.js';
 import Utils from '../../utils/Utils';
 import './index.less';
 
@@ -86,6 +87,16 @@ export default class Index extends React.Component {
         console.log(this.state.search);
     }
 
+    // 交易时间
+    onDateChange = (value) => {
+        let search = this.state.search;
+        search["startTime"] = value[0];
+        search["endTime"] = value[1];
+        this.setState({
+            search: search
+        });
+    }
+
     // 激活
     activationOper = () => {
         confirm({
@@ -139,7 +150,7 @@ export default class Index extends React.Component {
                     <div className="query_flex_item">
                         <div className="label">交易时间</div>
                         <div className="control">
-                            <Input className="width224" maxLength="30" name="userName1" onChange={this.handleChange} />
+                            <CommomRangePicker className="width224" onChangeCallBack={this.onDateChange}/>
                         </div>
                     </div>
                     <div className="query_flex_item">
