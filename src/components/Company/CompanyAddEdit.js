@@ -6,7 +6,7 @@ import { CityData } from '../../utils/CityData'
 import { IndustryTypeData } from '../../utils/IndustryTypeData'
 import { UploadPic } from '../../components/Upload/index';
 import Utils from '../../utils/Utils';
-import { Row, Col, Divider, Input, Button, Checkbox, Steps, Icon, Cascader } from 'antd';
+import { Row, Col, Divider, Input, Button, Steps, Icon, Cascader } from 'antd';
 
 import './CompanyAddEdit.less';
 
@@ -155,6 +155,10 @@ export default class CompanyAddEdit extends React.Component {
     onCityChange = (value, selectedOptions) => {
         console.log(value, selectedOptions);
     }
+    // 行业类别三级联动
+    onIndustryTypeChange = (value, selectedOptions) => {
+        console.log(value, selectedOptions);
+    }
 
     onGotoCLick = (num) => {
         let toggerShowArr = this.state.toggerShowArr;
@@ -239,7 +243,7 @@ export default class CompanyAddEdit extends React.Component {
                             <Row type="flex" align="middle" className="mb25" gutter={16}>
                                 <Col className="tr" span={3}>行业类别</Col>
                                 <Col span={12}>
-                                    <Cascader className="width350" placeholder="选择行业类别" options={IndustryTypeData} expandTrigger="hover" onChange={this.onCityChange} />
+                                    <Cascader className="width350" placeholder="选择行业类别" options={IndustryTypeData} expandTrigger="hover" onChange={this.onIndustryTypeChange} />
                                     <div className="error_info">{search.userNameErr}</div>
                                 </Col>
                             </Row>

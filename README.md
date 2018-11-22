@@ -20,3 +20,6 @@ npm run dev
 // 生产环境：编译使用的包文件
 npm run build
 ```
+![image](https://github.com/panyefan/react_webpack4/tree/master/src/images/1.png)
+![image](https://github.com/panyefan/react_webpack4/tree/master/src/images/2.png)
+![image](https://github.com/panyefan/react_webpack4/tree/master/src/images/3.png)
