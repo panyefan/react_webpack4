@@ -14,7 +14,7 @@ npm install --save-dev
 // 开发环境：提前打包一些基本不怎么修改的文件
 npm run dll
 
-// 运行项目，启动成功之后，访问http://localhost:8088/#/Login
+// 运行项目，启动成功之后，访问http://localhost:8088/#/login
 npm run dev
 
 // 生产环境：编译使用的包文件
