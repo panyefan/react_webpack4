@@ -24,7 +24,10 @@ export default class CompanyDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            search: {},
+            companySearch: {}, // 公司信息
+            bankSearch: {}, // 银行信息
+            papersSearch: {}, // 证件信息
+            invoiceSearch: {}, // 开票信息
             toggerShowArr: [false, false, false, false], // 步骤显示控制,分别对应 公司信息、企业银行账户、证件信息、开票信息
         };
     }
@@ -33,45 +36,132 @@ export default class CompanyDetail extends React.Component {
 
     }
 
-    handleChange = (e) => {
+    handleCompanyChange = (e) => {
         e.target.value = e.target.value.replace(/^\s+|\s+$/gm, '');
         let val = e.target.value;
         let name = e.target.name;
-        let search = this.state.search;
-        search[name] = val;
+        let companySearch = this.state.companySearch;
+        companySearch[name] = val;
         this.setState({
-            search: search
+            companySearch: companySearch
         });
 
-        this.check(name);
+        this.companyCheck(name);
+    }
+    handleBankChange = (e) => {
+        e.target.value = e.target.value.replace(/^\s+|\s+$/gm, '');
+        let val = e.target.value;
+        let name = e.target.name;
+        let bankSearch = this.state.bankSearch;
+        bankSearch[name] = val;
+        this.setState({
+            bankSearch: bankSearch
+        });
+
+        this.bankCheck(name);
+    }
+    handlePapersCompanyChange = (e) => {
+        e.target.value = e.target.value.replace(/^\s+|\s+$/gm, '');
+        let val = e.target.value;
+        let name = e.target.name;
+        let papersSearch = this.state.papersSearch;
+        papersSearch[name] = val;
+        this.setState({
+            papersSearch: papersSearch
+        });
+
+        this.papersCheck(name);
+    }
+    handleInvoiceCompanyChange = (e) => {
+        e.target.value = e.target.value.replace(/^\s+|\s+$/gm, '');
+        let val = e.target.value;
+        let name = e.target.name;
+        let invoiceSearch = this.state.invoiceSearch;
+        invoiceSearch[name] = val;
+        this.setState({
+            invoiceSearch: invoiceSearch
+        });
+
+        this.invoiceCheck(name);
     }
 
-    check = (name) => {
-        let search = this.state.search;
+    companyCheck = (name) => {
+        let companySearch = this.state.companySearch;
         let handle = {
-            "phone": () => {
-                if (!search.phone) {
-                    search.phoneErr = "请输入手机号";
-                    this.setState({ search });
+            "userName": () => {
+                if (!companySearch.userName) {
+                    companySearch.userNameErr = "请输入企业名称";
+                    this.setState({ companySearch });
                     return false;
                 }
-                if (!Regexp.phoneReg.test(search.phone)) {
-                    search.phoneErr = "请输入正确的手机号";
-                    this.setState({ search });
-                    return false;
-                }
-                search.phoneErr = "";
-                this.setState({ search });
+                companySearch.userNameErr = "";
+                this.setState({ companySearch });
                 return true;
             },
-            "password": () => {
-                if (!search.password) {
-                    search.passwordErr = "请输入密码";
-                    this.setState({ search });
+        }
+
+        return global.formCheck(name, handle);
+    }
+    bankCheck = (name) => {
+        let bankSearch = this.state.bankSearch;
+        let handle = {
+            "phone": () => {
+                if (!bankSearch.phone) {
+                    bankSearch.phoneErr = "请输入手机号";
+                    this.setState({ bankSearch });
                     return false;
                 }
-                search.passwordErr = "";
-                this.setState({ search });
+                if (!Regexp.phoneReg.test(bankSearch.phone)) {
+                    bankSearch.phoneErr = "请输入正确的手机号";
+                    this.setState({ bankSearch });
+                    return false;
+                }
+                bankSearch.phoneErr = "";
+                this.setState({ bankSearch });
+                return true;
+            },
+        }
+
+        return global.formCheck(name, handle);
+    }
+    papersCheck = (name) => {
+        let papersSearch = this.state.papersSearch;
+        let handle = {
+            "phone": () => {
+                if (!papersSearch.phone) {
+                    papersSearch.phoneErr = "请输入手机号";
+                    this.setState({ papersSearch });
+                    return false;
+                }
+                if (!Regexp.phoneReg.test(papersSearch.phone)) {
+                    papersSearch.phoneErr = "请输入正确的手机号";
+                    this.setState({ papersSearch });
+                    return false;
+                }
+                papersSearch.phoneErr = "";
+                this.setState({ papersSearch });
+                return true;
+            },
+        }
+
+        return global.formCheck(name, handle);
+    }
+    invoiceCheck = (name) => {
+        let invoiceSearch = this.state.invoiceSearch;
+        let handle = {
+            "phone": () => {
+                if (!invoiceSearch.phone) {
+                    invoiceSearch.phoneErr = "请输入手机号";
+                    this.setState({ invoiceSearch });
+                    return false;
+                }
+                if (!Regexp.phoneReg.test(invoiceSearch.phone)) {
+                    invoiceSearch.phoneErr = "请输入正确的手机号";
+                    this.setState({ invoiceSearch });
+                    return false;
+                }
+                invoiceSearch.phoneErr = "";
+                this.setState({ invoiceSearch });
                 return true;
             },
         }
@@ -79,10 +169,45 @@ export default class CompanyDetail extends React.Component {
         return global.formCheck(name, handle);
     }
 
+    // 编辑
     companyInfoEdit = (num) => {
         let toggerShowArr = this.state.toggerShowArr;
         toggerShowArr = Utils.setArrEleFalse(toggerShowArr);
         toggerShowArr[num] = true;
+        this.setState({ toggerShowArr });
+    }
+    // 保存
+    companyInfoSave = (num) => {
+        switch (num) {
+            case '0':
+                if(!this.companyCheck()){
+                    return false;
+                }
+                break;
+            case '1':
+                if(!this.bankCheck()){
+                    return false;
+                }
+                break;
+            case '2':
+                if(!this.papersCheck()){
+                    return false;
+                }
+                break;
+            case '3':
+                if(!this.invoiceCheck()){
+                    return false;
+                }
+                break;
+        
+            default:
+                break;
+        }
+
+        console.log(1111);
+
+        let toggerShowArr = this.state.toggerShowArr;
+        toggerShowArr = Utils.setArrEleFalse(toggerShowArr);
         this.setState({ toggerShowArr });
     }
     /**
@@ -111,7 +236,7 @@ export default class CompanyDetail extends React.Component {
 
     render() {
         const { className, onCompanyAddEdit, ...others } = this.props;
-        const { search, toggerShowArr } = this.state;
+        const { companySearch, bankSearch, papersSearch, invoiceSearch, toggerShowArr } = this.state;
         const cls = classNames({
             [className]: className
         });
@@ -126,7 +251,10 @@ export default class CompanyDetail extends React.Component {
                                 type="inner"
                                 title="公司信息"
                                 style={{ width: 500 }}
-                                extra={<Button type="primary" icon="edit" onClick={() => this.companyInfoEdit('0')}>{toggerShowArr[0] ? '保存' : '编辑'}</Button>}
+                                extra={
+                                    toggerShowArr[0]?
+                                    <Button type="primary" icon="save" onClick={() => this.companyInfoSave('0')}>保存</Button>:<Button type="primary" icon="edit" onClick={() => this.companyInfoEdit('0')}>编辑</Button>
+                                }
                             >
                                 {
                                     toggerShowArr[0] &&
@@ -134,50 +262,50 @@ export default class CompanyDetail extends React.Component {
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>企业名称</Col>
                                             <Col span={12}>
-                                                <Input className="width350" placeholder="公司名称必须与营业执照上一致" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <Input className="width350" placeholder="公司名称必须与营业执照上一致" maxLength="30" name="userName" onChange={this.handleCompanyChange} />
+                                                <div className="error_info">{companySearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>统一社会信用代码</Col>
                                             <Col span={12}>
-                                                <Input className="width350" placeholder="请输入统一社会信用代码" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <Input className="width350" placeholder="请输入统一社会信用代码" maxLength="30" name="userName" onChange={this.handleCompanyChange} />
+                                                <div className="error_info">{companySearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>行业类别</Col>
                                             <Col span={12}>
                                                 <Cascader className="width350" placeholder="选择行业类别" options={IndustryTypeData} expandTrigger="hover" onChange={this.onIndustryTypeChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{companySearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>客服电话</Col>
                                             <Col span={12}>
-                                                <Input className="width350" placeholder="请输入客服电话" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <Input className="width350" placeholder="请输入客服电话" maxLength="30" name="userName" onChange={this.handleCompanyChange} />
+                                                <div className="error_info">{companySearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>办公地址</Col>
                                             <Col span={12}>
                                                 <Cascader className="width350" placeholder="选择办公地址" options={CityData} expandTrigger="hover" onChange={this.onCityChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{companySearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>详细地址</Col>
                                             <Col span={12}>
-                                                <Input className="width350" placeholder="请输入详细地址" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <Input className="width350" placeholder="请输入详细地址" maxLength="30" name="userName" onChange={this.handleCompanyChange} />
+                                                <div className="error_info">{companySearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>企业邮箱</Col>
                                             <Col span={12}>
-                                                <Input className="width350" placeholder="请输入公司邮箱" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <Input className="width350" placeholder="请输入公司邮箱" maxLength="30" name="userName" onChange={this.handleCompanyChange} />
+                                                <div className="error_info">{companySearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                     </div>
@@ -223,7 +351,10 @@ export default class CompanyDetail extends React.Component {
                                 type="inner"
                                 title="企业银行账户"
                                 style={{ width: 500 }}
-                                extra={<Button type="primary" icon="edit" onClick={() => this.companyInfoEdit('1')}>{toggerShowArr[1] ? '保存' : '编辑'}</Button>}
+                                extra={
+                                    toggerShowArr[1]?
+                                    <Button type="primary" icon="save" onClick={() => this.companyInfoSave('1')}>保存</Button>:<Button type="primary" icon="edit" onClick={() => this.companyInfoEdit('1')}>编辑</Button>
+                                }
                             >
                                 {
                                     toggerShowArr[1] &&
@@ -232,34 +363,34 @@ export default class CompanyDetail extends React.Component {
                                             <Col span={4}>开户名称</Col>
                                             <Col span={12}>
                                                 <Input className="width350" placeholder="请输入纳税的开户名称" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{bankSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>开户账号</Col>
                                             <Col span={12}>
                                                 <Input className="width350" placeholder="请输入纳税的开户账号" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{bankSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>开户银行</Col>
                                             <Col span={12}>
                                                 <Input className="width350" placeholder="请输入纳税的开户银行名称" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{bankSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>银行卡照片</Col>
                                             <Col span={12}>
                                                 <UploadPic
-                                                    title="开户许可证"
+                                                    title="银行卡照片"
                                                     uploadKey="xixixi"
                                                     uploadURL="//jsonplaceholder.typicode.com/posts/"
                                                     picURL=""
                                                     onChange={this.uploadImg}
                                                 ></UploadPic>
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{bankSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                     </div>
@@ -294,7 +425,10 @@ export default class CompanyDetail extends React.Component {
                                 type="inner"
                                 title="证件信息"
                                 style={{ width: 500 }}
-                                extra={<Button type="primary" icon="edit" onClick={() => this.companyInfoEdit('2')}>{toggerShowArr[2] ? '保存' : '编辑'}</Button>}
+                                extra={
+                                    toggerShowArr[2]?
+                                    <Button type="primary" icon="save" onClick={() => this.companyInfoSave('2')}>保存</Button>:<Button type="primary" icon="edit" onClick={() => this.companyInfoEdit('2')}>编辑</Button>
+                                }
                             >
                                 {
                                     toggerShowArr[2] &&
@@ -303,14 +437,14 @@ export default class CompanyDetail extends React.Component {
                                             <Col span={4}>法人姓名</Col>
                                             <Col span={12}>
                                                 <Input className="width350" placeholder="请输入法人姓名" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{papersSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>法人身份证号</Col>
                                             <Col span={12}>
                                                 <Input className="width350" placeholder="请输入法人身份证号" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{papersSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
@@ -323,7 +457,7 @@ export default class CompanyDetail extends React.Component {
                                                     picURL=""
                                                     onChange={this.uploadImg}
                                                 ></UploadPic>
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{papersSearch.userNameErr}</div>
                                             </Col>
                                             <Col span={8}>
                                                 <UploadPic
@@ -333,7 +467,7 @@ export default class CompanyDetail extends React.Component {
                                                     picURL=""
                                                     onChange={this.uploadImg}
                                                 ></UploadPic>
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{papersSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
@@ -346,7 +480,7 @@ export default class CompanyDetail extends React.Component {
                                                     picURL=""
                                                     onChange={this.uploadImg}
                                                 ></UploadPic>
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{papersSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                     </div>
@@ -380,7 +514,10 @@ export default class CompanyDetail extends React.Component {
                                 type="inner"
                                 title="开票信息"
                                 style={{ width: 500 }}
-                                extra={<Button type="primary" icon="edit" onClick={() => this.companyInfoEdit('3')}>{toggerShowArr[3] ? '保存' : '编辑'}</Button>}
+                                extra={
+                                    toggerShowArr[3]?
+                                    <Button type="primary" icon="save" onClick={() => this.companyInfoSave('3')}>保存</Button>:<Button type="primary" icon="edit" onClick={() => this.companyInfoEdit('3')}>编辑</Button>
+                                }
                             >
                                 {
                                     toggerShowArr[3] &&
@@ -389,42 +526,42 @@ export default class CompanyDetail extends React.Component {
                                             <Col span={4}>发票抬头</Col>
                                             <Col span={12}>
                                                 <Input className="width350" placeholder="请输入营业执照上的法定名称" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{invoiceSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>信用代码</Col>
                                             <Col span={12}>
                                                 <Input className="width350" placeholder="请输入统一的社会信用代码" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{invoiceSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>注册地址</Col>
                                             <Col span={12}>
                                                 <Input className="width350" placeholder="请输入公司注册地址" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{invoiceSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>公司电话</Col>
                                             <Col span={12}>
                                                 <Input className="width350" placeholder="请输入公司电话，区号-总机" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{invoiceSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>开户银行</Col>
                                             <Col span={12}>
                                                 <Input className="width350" placeholder="请输入开户银行名称" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{invoiceSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                         <Row type="flex" align="middle" className="mb25" gutter={16}>
                                             <Col span={4}>开户账号</Col>
                                             <Col span={12}>
                                                 <Input className="width350" placeholder="请输入开户银行账号" maxLength="30" name="userName" onChange={this.handleChange} />
-                                                <div className="error_info">{search.userNameErr}</div>
+                                                <div className="error_info">{invoiceSearch.userNameErr}</div>
                                             </Col>
                                         </Row>
                                     </div>

@@ -33,6 +33,11 @@ export default class ForgetPassword extends React.Component {
 
     }
 
+    // 回车键
+    handleEnterKey = (e) => {
+        e.keyCode === 13 && this.saveFormData();
+    }
+
     // 发送检验码
     sendVerificationCode = () => {
         if (!this.check("phone")) { return; };
@@ -173,20 +178,20 @@ export default class ForgetPassword extends React.Component {
                             <div className="error_info">{search.userNameErr}</div>
                         </Row> */}
                         <Row className="mb25">
-                            <Input className="login_input" placeholder="输入手机号码" maxLength="11" name="phone" onChange={this.handleChange}/>
+                            <Input className="login_input" placeholder="输入手机号码" maxLength="11" name="phone" onChange={this.handleChange} onKeyUp={this.handleEnterKey}/>
                             <div className="error_info">{search.phoneErr}</div>
                         </Row>
                         <Row className="mb25">
-                            <Input className="login_input width200" placeholder="输入手机收到的验证码" maxLength="6" name="verifCode" onChange={this.handleChange}/>
+                            <Input className="login_input width200" placeholder="输入手机收到的验证码" maxLength="6" name="verifCode" onChange={this.handleChange} onKeyUp={this.handleEnterKey}/>
                             <Button type="primary" className="login_form_button margin_left18" disabled={this.state.verifiCodeBtnState} style={{ width: '112px' }} onClick={this.sendVerificationCode}>{this.state.verficationName}</Button>
                             <div className="error_info">{search.verifCodeErr}</div>
                         </Row>
                         <Row className="mb25">
-                            <Input type="password" className="login_input" placeholder="填写密码" maxLength="30" name="password" onChange={this.handleChange}/>
+                            <Input type="password" className="login_input" placeholder="填写密码" maxLength="30" name="password" onChange={this.handleChange} onKeyUp={this.handleEnterKey}/>
                             <div className="error_info">{search.passwordErr}</div>
                         </Row>
                         <Row className="mb25">
-                            <Input type="password" className="login_input" placeholder="确认密码" maxLength="30" name="confirmPassword" onChange={this.handleChange}/>
+                            <Input type="password" className="login_input" placeholder="确认密码" maxLength="30" name="confirmPassword" onChange={this.handleChange} onKeyUp={this.handleEnterKey}/>
                             <div className="error_info">{search.confirmPasswordErr}</div>
                         </Row>
                         <Row className="mb25">

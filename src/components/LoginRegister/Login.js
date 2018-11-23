@@ -28,6 +28,11 @@ export default class Login extends React.Component {
 
     }
 
+    // 回车键
+    handleEnterKey = (e) => {
+        e.keyCode === 13 && this.saveFormData();
+    }
+
     handleChange = (e) => {
         e.target.value = e.target.value.replace(/^\s+|\s+$/gm, '');
         let val = e.target.value;
@@ -108,11 +113,11 @@ export default class Login extends React.Component {
                     <div className="icon"></div>
                     <div className="login_panel_wrap">
                         <Row className="mb25">
-                            <Input className="login_input" placeholder="输入手机号" maxLength="11" name="phone" onChange={this.handleChange} />
+                            <Input className="login_input" placeholder="输入手机号" maxLength="11" name="phone" onChange={this.handleChange} onKeyUp={this.handleEnterKey}/>
                             <div className="error_info">{search.phoneErr}</div>
                         </Row>
                         <Row className="mb25">
-                            <Input type="password" className="login_input" placeholder="输入密码" maxLength="30" name="password" onChange={this.handleChange} />
+                            <Input type="password" className="login_input" placeholder="输入密码" maxLength="30" name="password" onChange={this.handleChange} onKeyUp={this.handleEnterKey}/>
                             <div className="error_info">{search.passwordErr}</div>
                         </Row>
                         <Row className="mb25">

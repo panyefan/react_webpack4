@@ -29,8 +29,8 @@ export default class CommomRangePicker extends React.Component {
 
     onChange = (value, str) => {
         this.props.onChangeCallBack ? this.props.onChangeCallBack([
-            moment(value[0].format('YYYY-MM-DD 00:00:00')).valueOf(),
-            moment(value[1].format('YYYY-MM-DD 23:59:59')).valueOf(),
+            value[0] ? moment(value[0].format('YYYY-MM-DD 00:00:00')).valueOf() : '',
+            value[1] ? moment(value[1].format('YYYY-MM-DD 23:59:59')).valueOf() : '',
         ]) : null
     }
     disabledDate = (current) => {
